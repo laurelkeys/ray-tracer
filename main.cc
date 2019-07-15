@@ -3,7 +3,7 @@
 
 using namespace std;
 
-bool hit_sphere(const Vec3& center, float radius, const Ray& r);
+float hit_sphere(const Vec3& center, float radius, const Ray& r);
 Vec3 visible_color(const Ray& r);
 
 int main() {
@@ -36,28 +36,34 @@ int main() {
     }
 }
 
-bool hit_sphere(const Vec3& center, float radius, const Ray& r) {
-    Vec3 o_c = r.origin() - center; // A - C
-    float a = dot(r.direction(), r.direction()); // <B, B>
-    float b = 2.0 * dot(r.direction(), o_c); // <B, A - C>
-    float c = dot(o_c, o_c) - radius*radius; // <A - C, A - C> - R*R
+float hit_sphere(const Vec3& center, float radius, const Ray& r) {
     // Sphere equation, with center C:
     //   <p(t) - C, p(t) - C> = R*R
     //   -> <A + t*B - C, A + t*B - C> = R*R
     //   -> t*t*<B, B> + 2*t*<B, A - C> + <A - C, A - C> - R*R = 0
+
+    Vec3 o_c = r.origin() - center; // A - C
+    float a = dot(r.direction(), r.direction()); // <B, B>
+    float b = 2.0 * dot(r.direction(), o_c); // <B, A - C>
+    float c = dot(o_c, o_c) - radius*radius; // <A - C, A - C> - R*R
     float discriminant = b*b - 4*a*c;
-    return discriminant > 0;
+
+    if (discriminant < 0) return -1.0; // the ray doesn't hit the sphere
+
+    // returns the smallest value of t such that p(t) hits the sphere
+    return (-b - sqrt(discriminant)) / (2.0*a);
 }
 
 Vec3 visible_color(const Ray& r) {
-    if (hit_sphere(Vec3(0, 0, -1), 0.5, r)) {
-        return Vec3(1, 0, 0); // color the sphere RED
+    Vec3 sphere_center(0.0, 0.0, -1.0);
+    float t = hit_sphere(sphere_center, 0.5, r);
+    if (t > 0.0) { // the ray hits the sphere at p(t)
+        Vec3 surface_normal = unit_vector(r.point_at_parameter(t) - sphere_center);
+        return 0.5 * (surface_normal + Vec3(1.0, 1.0, 1.0)); // color values from 0.0 to 1.0
     }
-
+    // the ray doesn't hit the sphere
     Vec3 unit_direction = unit_vector(r.direction());
-    // mapping [-1.0, 1.0] to [0.0, 1.0]
-    float t = 0.5 * (unit_direction.y() + 1.0);
-    
+    t = 0.5 * (unit_direction.y() + 1.0);
     // blends white and blue based on the ray's y coordinate
     return (1.0 - t) * Vec3(1.0, 1.0, 1.0) + t * Vec3(0.5, 0.7, 1.0);
 }
