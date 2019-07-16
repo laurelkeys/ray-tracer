@@ -1,15 +1,19 @@
 #ifndef SPHEREHH
 #define SPHEREHH
 
-#include "Hittable.hh"
+#include "Material.hh"
 
 class Sphere : public Hittable {
     public:
         Vec3 center;
         float radius;
+        Material* material_ptr;
 
         Sphere() { }
-        Sphere(Vec3 center, float radius) : center(center), radius(radius) { }
+        Sphere(Vec3 center, float radius, Material* material_ptr) : 
+            center(center), 
+            radius(radius), 
+            material_ptr(material_ptr) { }
 
         virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
 };
@@ -36,6 +40,7 @@ bool Sphere::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const {
             rec.t = t;
             rec.p = r.point_at_parameter(t);
             rec.surface_normal = (rec.p - center) / radius; // versor
+            rec.material_ptr = material_ptr;
             return true;
         }
         
@@ -44,6 +49,7 @@ bool Sphere::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const {
             rec.t = t;
             rec.p = r.point_at_parameter(t);
             rec.surface_normal = (rec.p - center) / radius; // versor
+            rec.material_ptr = material_ptr;
             return true;
         }
     }

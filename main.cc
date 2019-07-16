@@ -1,19 +1,15 @@
 #include <iostream>
-#include <random>
 #include "float.h"
 #include "Camera.hh"
 #include "Sphere.hh"
 #include "HittableList.hh"
+#include "RandomNumber.hh"
 
 using namespace std;
 
-Vec3 random_point_in_unit_sphere();
-Vec3 visible_color(const Ray& r, Hittable* world);
+Vec3 visible_color(const Ray& r, Hittable* world, int depth);
 
-// ref.: https://stackoverflow.com/questions/686353/random-float-number-generation/17798317#17798317
-random_device rd;
-mt19937 e2(rd()); // engine
-uniform_real_distribution<> rand_dist(0.0, 1.0); // distribution \in [0.0, 1.0)
+int MAX_DEPTH = 50; // maximum amount of calculated ray reflections
 
 int main() {
     int nx = 200;
@@ -22,10 +18,12 @@ int main() {
     
     cout << "P3\n" << nx << " " << ny << "\n255\n";
 
-    Hittable* objects[2];
-    objects[0] = new Sphere(Vec3(0.0, 0.0, -1.0), 0.5);
-    objects[1] = new Sphere(Vec3(0.0, -100.5, -1.0), 100.0);
-    Hittable* world = new HittableList(objects, 2);
+    Hittable* objects[4];
+    objects[0] = new Sphere(Vec3( 0.0,    0.0, -1.0),   0.5, new Lambertian(Vec3(0.8, 0.3, 0.3)));
+    objects[1] = new Sphere(Vec3( 0.0, -100.5, -1.0), 100.0, new Lambertian(Vec3(0.8, 0.8, 0.0)));
+    objects[2] = new Sphere(Vec3( 1.0,    0.0, -1.0),   0.5, new Metal(Vec3(0.8, 0.6, 0.2)));
+    objects[3] = new Sphere(Vec3(-1.0,    0.0, -1.0),   0.5, new Metal(Vec3(0.8, 0.8, 0.8)));
+    Hittable* world = new HittableList(objects, 4);
 
     Camera cam;
     for (int j = ny-1; j >= 0; --j) {
@@ -33,12 +31,11 @@ int main() {
             Vec3 color(0.0, 0.0, 0.0);
             for (int s = 0; s < ns; ++s) {
                 // pixel sampling for antialiasing
-                // obs.: 0.0 <= rand_dist(e2) < 1.0
-                float u = float(i + rand_dist(e2)) / float(nx);
-                float v = float(j + rand_dist(e2)) / float(ny);
+                float u = float(i + RandomNumber::in_01inc_1exc()) / float(nx);
+                float v = float(j + RandomNumber::in_01inc_1exc()) / float(ny);
                 Ray r = cam.get_ray(u, v);
                 Vec3 p = r.point_at_parameter(2.0);
-                color += visible_color(r, world);
+                color += visible_color(r, world, 0);
             }
             color /= float(ns); // averages the sampled colors
             color = Vec3(sqrt(color.r()), sqrt(color.g()), sqrt(color.b())); // gamma 2
@@ -52,26 +49,17 @@ int main() {
     }
 }
 
-Vec3 random_point_in_unit_sphere() {
-    Vec3 p;
-    do {
-        // we pick a random point in the unit cube with x, y, z \in [-1.0, 1.0]
-        // and if it's outside the sphere we reject it and try again
-        // obs.: 0.0 <= rand_dist(e2) < 1.0, so we map [0.0, 1.0) to [-1.0, 1.0)
-        p = 2.0 * Vec3(rand_dist(e2), rand_dist(e2), rand_dist(e2)) - Vec3(1.0, 1.0, 1.0);
-    } while (p.squared_length() >= 1.0);
-    return p;
-}
-
-Vec3 visible_color(const Ray& r, Hittable* world) {
+Vec3 visible_color(const Ray& r, Hittable* world, int depth) {
     HitRecord rec;
     float t_min = 0.001; // decrease "shadow acne"
     if (world->hit(r, t_min, FLT_MAX, rec)) {
-        float reflectance = 0.5;
-        // simulating a matte object reflection by choosing a 
-        // random point in the unit sphere with center p(t) + N
-        Vec3 target = rec.p + rec.surface_normal + random_point_in_unit_sphere();
-        return reflectance * visible_color(Ray(rec.p, target - rec.p), world);
+        Ray r_scattered;
+        Vec3 attenuation;
+        if (depth < MAX_DEPTH && rec.material_ptr->scatter(r, rec, attenuation, r_scattered)) {
+            // increases depth to limit the amount of calculated reflections
+            return attenuation * visible_color(r_scattered, world, depth+1);
+        }
+        return Vec3(0.0, 0.0, 0.0); // BLACK
     }
     
     Vec3 unit_direction = unit_vector(r.direction());

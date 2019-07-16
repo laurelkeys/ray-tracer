@@ -3,10 +3,13 @@
 
 #include "Ray.hh"
 
+class Material; // forward declaration (so Material and Hittable can refer to each other)
+
 struct HitRecord {
     float t;
     Vec3 p; // point p(t) where there was a hit
     Vec3 surface_normal; // versor that points out from the surface
+    Material* material_ptr;
 };
 
 class Hittable {
