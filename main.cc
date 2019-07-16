@@ -40,7 +40,8 @@ int main() {
                 Vec3 p = r.point_at_parameter(2.0);
                 color += visible_color(r, world);
             }
-            color /= ns; // averages the sampled colors
+            color /= float(ns); // averages the sampled colors
+            color = Vec3(sqrt(color.r()), sqrt(color.g()), sqrt(color.b())); // gamma 2
 
             // mapping [0.0, 1.0] to [0, 255]
             int ir = int(255.99*color.r());
@@ -57,14 +58,15 @@ Vec3 random_point_in_unit_sphere() {
         // we pick a random point in the unit cube with x, y, z \in [-1.0, 1.0]
         // and if it's outside the sphere we reject it and try again
         // obs.: 0.0 <= rand_dist(e2) < 1.0, so we map [0.0, 1.0) to [-1.0, 1.0)
-        p = 2.0*Vec3(rand_dist(e2), rand_dist(e2), rand_dist(e2)) - Vec3(1.0, 1.0, 1.0);
+        p = 2.0 * Vec3(rand_dist(e2), rand_dist(e2), rand_dist(e2)) - Vec3(1.0, 1.0, 1.0);
     } while (p.squared_length() >= 1.0);
     return p;
 }
 
 Vec3 visible_color(const Ray& r, Hittable* world) {
     HitRecord rec;
-    if (world->hit(r, 0.0, FLT_MAX, rec)) {
+    float t_min = 0.001; // decrease "shadow acne"
+    if (world->hit(r, t_min, FLT_MAX, rec)) {
         float reflectance = 0.5;
         // simulating a matte object reflection by choosing a 
         // random point in the unit sphere with center p(t) + N
