@@ -7,12 +7,15 @@
 
 using namespace std;
 
+Vec3 random_point_in_unit_sphere();
 Vec3 visible_color(const Ray& r, Hittable* world);
 
+// ref.: https://stackoverflow.com/questions/686353/random-float-number-generation/17798317#17798317
+random_device rd;
+mt19937 e2(rd()); // engine
+uniform_real_distribution<> rand_dist(0.0, 1.0); // distribution \in [0.0, 1.0)
+
 int main() {
-    random_device rd;
-    mt19937 e2(rd()); // engine
-    uniform_real_distribution<> dist(0.0, 1.0); // distribution \in [0.0, 1.0)
     int nx = 200;
     int ny = 100;
     int ns = 100; // number of samples per pixel
@@ -30,9 +33,9 @@ int main() {
             Vec3 color(0.0, 0.0, 0.0);
             for (int s = 0; s < ns; ++s) {
                 // pixel sampling for antialiasing
-                // obs.: 0.0 <= dist(e2) < 1.0
-                float u = float(i + dist(e2)) / float(nx);
-                float v = float(j + dist(e2)) / float(ny);
+                // obs.: 0.0 <= rand_dist(e2) < 1.0
+                float u = float(i + rand_dist(e2)) / float(nx);
+                float v = float(j + rand_dist(e2)) / float(ny);
                 Ray r = cam.get_ray(u, v);
                 Vec3 p = r.point_at_parameter(2.0);
                 color += visible_color(r, world);
@@ -48,11 +51,25 @@ int main() {
     }
 }
 
+Vec3 random_point_in_unit_sphere() {
+    Vec3 p;
+    do {
+        // we pick a random point in the unit cube with x, y, z \in [-1.0, 1.0]
+        // and if it's outside the sphere we reject it and try again
+        // obs.: 0.0 <= rand_dist(e2) < 1.0, so we map [0.0, 1.0) to [-1.0, 1.0)
+        p = 2.0*Vec3(rand_dist(e2), rand_dist(e2), rand_dist(e2)) - Vec3(1.0, 1.0, 1.0);
+    } while (p.squared_length() >= 1.0);
+    return p;
+}
+
 Vec3 visible_color(const Ray& r, Hittable* world) {
     HitRecord rec;
     if (world->hit(r, 0.0, FLT_MAX, rec)) {
-        // mapping [-1.0, 1.0] to [0.0, 1.0]
-        return 0.5 * (rec.surface_normal + Vec3(1.0, 1.0, 1.0)); // RGB values from 0.0 to 1.0
+        float reflectance = 0.5;
+        // simulating a matte object reflection by choosing a 
+        // random point in the unit sphere with center p(t) + N
+        Vec3 target = rec.p + rec.surface_normal + random_point_in_unit_sphere();
+        return reflectance * visible_color(Ray(rec.p, target - rec.p), world);
     }
     
     Vec3 unit_direction = unit_vector(r.direction());
