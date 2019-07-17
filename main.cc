@@ -8,17 +8,18 @@
 using namespace std;
 
 Hittable* random_scene();
+Hittable* wikipedia_scene();
 Vec3 visible_color(const Ray& r, Hittable* world, int depth);
 
 int MAX_DEPTH = 50; // maximum amount of calculated ray reflections
 
 int main() {
-    // int nx = 200;
-    // int ny = 100;
-    // int ns = 100; // number of samples per pixel
-    int nx = 1200;
-    int ny = 800;
-    int ns = 10;
+    int nx = 200;
+    int ny = 100;
+    int ns = 100; // number of samples per pixel
+    // int nx = 1200;
+    // int ny = 800;
+    // int ns = 10;
     
     cout << "P3\n" << nx << " " << ny << "\n255\n";
 
@@ -33,12 +34,12 @@ int main() {
     objects[4] = new Sphere(Vec3(-1.0,    0.0, -1.0), -0.45, new Dielectric(1.5));
     Hittable* world = new HittableList(objects, number_of_objects);
     */
-    Hittable* world = random_scene();
+    Hittable* world = wikipedia_scene(); // random_scene();
 
-    Vec3 look_from(13.0, 2.0, 3.0);
+    Vec3 look_from(0.0, 0.0, 6.0);
     Vec3 look_at(0.0, 0.0, 0.0);
 
-    float vfov = 20.0;
+    float vfov = 45.0;
     float lens_aperture = 0.1;
     float dist_to_focus = (look_from - look_at).length();
     
@@ -131,3 +132,32 @@ Hittable* random_scene() {
 
     return new HittableList(objects, i);
 }
+
+Hittable* wikipedia_scene() {
+    // attempt to build the scene of the first image on Wikipedia's "Ray tracing (graphics)" page
+    // ref.: https://en.wikipedia.org/wiki/File:Recursive_raytrace_of_a_sphere.png
+
+    Vec3 white(0.9, 0.9, 0.9);
+    Vec3 salmon(0.99, 0.71, 0.65);
+    Vec3 yellow(1.0, 0.99, 0.74); // (0.99, 0.89, 0.6);
+    Vec3 pink(1.0, 0.72, 0.92);
+    Vec3 pink2(0.94, 0.5, 0.55); // (1.0, 0.59, 0.74);
+    Vec3 beige(1.0, 0.87, 0.82);
+
+    int number_of_objects = 5; // FIXME FIXME FIXME FIXME FIXME FIXME FIXME FIXME
+    Hittable** objects = new Hittable*[number_of_objects];
+    
+    float r = 1.0;
+    // Vec3(width, height, depth)
+    objects[0] = new Sphere(Vec3(0.0, -1000.0 - r, 0.0), 1000.0, new Lambertian(white));
+    objects[1] = new Sphere(Vec3(0.0, 0.0, 0.0), r, new Lambertian(salmon));
+    objects[2] = new Sphere(Vec3(0.3-r, -0.7*r, 1.8*r), 0.3*r, new Lambertian(yellow));
+    objects[3] = new Sphere(Vec3(1.2*r, -0.4*r, r), 0.6*r, new Lambertian(beige));
+    objects[4] = new Sphere(Vec3(-1.5*r, -0.3*r, r), 0.7*r, new Lambertian(pink2));
+    // objects[1] = new Sphere(Vec3( 0.0,    0.0, -1.0),   0.5, new Lambertian(salmon));
+    // objects[3] = new Sphere(Vec3( 1.0,    0.0, -1.0),   0.5, new Metal(Vec3(0.8, 0.6, 0.2)));
+    // objects[3] = new Sphere(Vec3(-1.0,    0.0, -1.0),   0.5, new Dielectric(1.5));
+
+    return new HittableList(objects, number_of_objects);
+}
+
