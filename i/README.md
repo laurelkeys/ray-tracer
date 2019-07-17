@@ -8,4 +8,5 @@
 | ![](hollow_glass_15thickness.png) | ![](hollow_glass_20thickness.png) | ![](hollow_glass_45thickness.png) | ![](bubble.png) |
 | ![](cam_90vfov.png) | ![](cam_two_spheres.png) | ![](cam_90vfov_from_-2_2_1.png) | ![](cam_45vfov_from_-2_2_1.png) |
 | ![](45vfov_from_2_2_1.png) | ![](90vfov_from_2_2_1.png) | ![](30vfov_from_-2_2_1.png) | ![](a0_f1_20vfov_from_3_3_2.png) |
-| ![](a2_20vfov_from_3_3_2.png) | ![](random_scene_100xAA.png) | ![](random_scene_100xAA_fixed_cam.png) |   |
+| ![](a2_20vfov_from_3_3_2.png) | ![](random_scene_100xAA.png) | ![](random_scene_100xAA_fixed_cam.png) | ![](wiki_4.png) |
+| ![](wiki_4_fix.png) | ![](wiki_6.png) | ![](wiki_7.png) | ![](wiki_8.png) |

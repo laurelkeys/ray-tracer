@@ -30,7 +30,8 @@ def readme_fname(path):
 table = np.array([readme_fname(path) for _, path in entries])
 # print(f"{table.size} entries, {cols} columns, {math.ceil(table.size / cols)} rows")
 
-table = np.append(table, np.tile([' '], cols - (table.size % cols)))
+if table.size % cols != 0:
+    table = np.append(table, np.tile([' '], cols - (table.size % cols)))
 table = table.reshape((-1, cols))
 print("| " * cols + '|')
 print("| :---: " * cols + '|')

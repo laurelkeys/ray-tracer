@@ -6,11 +6,11 @@ These images with few objects take less than a second to render (even with 100 s
 
 Below are some 1200x800 images with ~500 spheres and 10 samples per pixel, which took around 3 minutes to render:
 
-![](https://github.com/laurelkeys/ray-tracer/blob/master/i/large/random_scene_10xAA_fixed_cam_large.png)
+<img align="left" src="https://raw.githubusercontent.com/laurelkeys/ray-tracer/master/i/large/wiki.png" hspace="4" width="32%"/><img align="left" src="https://raw.githubusercontent.com/laurelkeys/ray-tracer/master/i/large/wiki_metal_ground.png" hspace="4" width="32%"/><img align="left" src="https://raw.githubusercontent.com/laurelkeys/ray-tracer/master/i/large/wiki_glass_ground.png" hspace="4" width="32%"/>
+<br><br><br><br><br>
 
-![](https://github.com/laurelkeys/ray-tracer/blob/master/i/large/random_scene_10xAA_y10_large.png)
-
-![](https://github.com/laurelkeys/ray-tracer/blob/master/i/large/random_scene_10xAA_y18_x18_fixed_dof_large.png)
+<img align="left" src="https://raw.githubusercontent.com/laurelkeys/ray-tracer/master/i/large/random_scene_10xAA_fixed_cam_large.png" hspace="4" width="32%"/><img align="left" src="https://raw.githubusercontent.com/laurelkeys/ray-tracer/master/i/large/random_scene_10xAA_y10_large.png" hspace="4" width="32%"/><img align="left" src="https://raw.githubusercontent.com/laurelkeys/ray-tracer/master/i/large/random_scene_10xAA_y18_x18_fixed_dof_large.png" hspace="4" width="32%"/>
+<br><br><br><br><br>
 
 (more at [i/large/](https://github.com/laurelkeys/ray-tracer/blob/master/i/large/)).
 
