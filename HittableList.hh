@@ -9,7 +9,9 @@ class HittableList : public Hittable {
         Hittable** list;
 
         HittableList() { }
-        HittableList(Hittable** list, int n) : list(list), list_size(n) { }
+        HittableList(Hittable** list, int n) : 
+            list(list), 
+            list_size(n) { }
 
         virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
 };

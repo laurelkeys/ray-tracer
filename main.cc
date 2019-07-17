@@ -18,12 +18,14 @@ int main() {
     
     cout << "P3\n" << nx << " " << ny << "\n255\n";
 
-    Hittable* objects[4];
+    Hittable* objects[5];
     objects[0] = new Sphere(Vec3( 0.0,    0.0, -1.0),   0.5, new Lambertian(Vec3(0.8, 0.3, 0.3)));
     objects[1] = new Sphere(Vec3( 0.0, -100.5, -1.0), 100.0, new Lambertian(Vec3(0.8, 0.8, 0.0)));
     objects[2] = new Sphere(Vec3( 1.0,    0.0, -1.0),   0.5, new Metal(Vec3(0.8, 0.6, 0.2)));
-    objects[3] = new Sphere(Vec3(-1.0,    0.0, -1.0),   0.5, new Metal(Vec3(0.8, 0.8, 0.8)));
-    Hittable* world = new HittableList(objects, 4);
+    // note: the following objects simulate a hollow sphere with 0.05 thickness (0.5 - 0.45)
+    objects[3] = new Sphere(Vec3(-1.0,    0.0, -1.0),   0.5, new Dielectric(1.5));
+    objects[4] = new Sphere(Vec3(-1.0,    0.0, -1.0), -0.45, new Dielectric(1.5));
+    Hittable* world = new HittableList(objects, 5);
 
     Camera cam;
     for (int j = ny-1; j >= 0; --j) {
