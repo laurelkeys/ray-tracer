@@ -7,6 +7,7 @@
 
 using namespace std;
 
+Hittable* random_scene();
 Vec3 visible_color(const Ray& r, Hittable* world, int depth);
 
 int MAX_DEPTH = 50; // maximum amount of calculated ray reflections
@@ -18,6 +19,7 @@ int main() {
     
     cout << "P3\n" << nx << " " << ny << "\n255\n";
 
+    /*
     int number_of_objects = 5;
     Hittable* objects[number_of_objects];
     objects[0] = new Sphere(Vec3( 0.0,    0.0, -1.0),   0.5, new Lambertian(Vec3(0.8, 0.3, 0.3)));
@@ -27,14 +29,17 @@ int main() {
     objects[3] = new Sphere(Vec3(-1.0,    0.0, -1.0),   0.5, new Dielectric(1.5));
     objects[4] = new Sphere(Vec3(-1.0,    0.0, -1.0), -0.45, new Dielectric(1.5));
     Hittable* world = new HittableList(objects, number_of_objects);
+    */
+    Hittable* world = random_scene();
 
     Vec3 look_from(3.0, 3.0, 2.0);
     Vec3 look_at(0.0, 0.0, -1.0);
-    Vec3 view_up(0.0, 1.0, 0.0);
+
     float vfov = 20.0;
     float lens_aperture = 2.0;
     float dist_to_focus = (look_from - look_at).length();
-    Camera cam(lens_aperture, dist_to_focus, look_from, look_at, view_up, vfov, float(nx) / float(ny));
+    
+    Camera cam(lens_aperture, dist_to_focus, look_from, look_at, Vec3(0.0, 1.0, 0.0), vfov, float(nx) / float(ny));
     for (int j = ny-1; j >= 0; --j) {
         for (int i = 0; i < nx; ++i) {
             Vec3 color(0.0, 0.0, 0.0);
@@ -75,4 +80,52 @@ Vec3 visible_color(const Ray& r, Hittable* world, int depth) {
     float t = 0.5 * (unit_direction.y() + 1.0);
     // blends white and blue based on the ray's y coordinate
     return (1.0 - t) * Vec3(1.0, 1.0, 1.0) + t * Vec3(0.5, 0.7, 1.0);
+}
+
+Hittable* random_scene() {
+    int n = 500;
+    Hittable** objects = new Hittable*[n+1];
+    objects[0] =  new Sphere(Vec3(0.0, -1000.0, 0.0), 1000.0, new Lambertian(Vec3(0.5, 0.5, 0.5)));
+
+    int i = 1;
+    for (int a = -11; a < 11; ++a) {
+        for (int b = -11; b < 11; ++b) {
+            float choose_mat = Random::number_in_01inc_1exc();
+            Vec3 center(a + 0.9 * Random::number_in_01inc_1exc(), 
+                        0.2, 
+                        b + 0.9 * Random::number_in_01inc_1exc());
+            
+            if ((center - Vec3(4.0, 0.2, 0.0)).length() > 0.9) {
+                Material* material_ptr;
+
+                if (choose_mat < 0.8) {
+                    material_ptr = new Lambertian(
+                        // albedo
+                        Vec3(Random::number_in_01inc_1exc() * Random::number_in_01inc_1exc(), 
+                             Random::number_in_01inc_1exc() * Random::number_in_01inc_1exc(), 
+                             Random::number_in_01inc_1exc() * Random::number_in_01inc_1exc()));
+                } else if (choose_mat < 0.95) {
+                    material_ptr = new Metal(
+                        // albedo
+                        Vec3(0.5 * (1.0 + Random::number_in_01inc_1exc()), 
+                             0.5 * (1.0 + Random::number_in_01inc_1exc()), 
+                             0.5 * (1.0 + Random::number_in_01inc_1exc())), 
+                        // fuzz
+                        0.5 * Random::number_in_01inc_1exc());
+                } else {
+                    material_ptr = new Dielectric(
+                        // refractive_index
+                        1.5);
+                }
+
+                objects[i++] = new Sphere(center, 0.2, material_ptr);
+            }
+        }
+    }
+
+    objects[i++] = new Sphere(Vec3( 0.0, 1.0, 0.0), 1.0, new Dielectric(1.5));
+    objects[i++] = new Sphere(Vec3(-4.0, 1.0, 0.0), 1.0, new Lambertian(Vec3(0.4, 0.2, 0.1)));
+    objects[i++] = new Sphere(Vec3( 4.0, 1.0, 0.0), 1.0, new Metal(Vec3(0.7, 0.6, 0.5), 0.0));
+
+    return new HittableList(objects, i);
 }
