@@ -40,7 +40,7 @@ int main() {
 
     float vfov = 20.0;
     float lens_aperture = 0.1;
-    float dist_to_focus = 10.0;
+    float dist_to_focus = (look_from - look_at).length();
     
     Camera cam(lens_aperture, dist_to_focus, look_from, look_at, Vec3(0.0, 1.0, 0.0), vfov, float(nx) / float(ny));
     for (int j = ny-1; j >= 0; --j) {
@@ -51,7 +51,6 @@ int main() {
                 float u = float(i + Random::number_in_01inc_1exc()) / float(nx);
                 float v = float(j + Random::number_in_01inc_1exc()) / float(ny);
                 Ray r = cam.get_ray(u, v);
-                Vec3 p = r.point_at_parameter(2.0);
                 color += visible_color(r, world, 0);
             }
             color /= float(ns); // averages the sampled colors
@@ -126,9 +125,9 @@ Hittable* random_scene() {
         }
     }
 
-    objects[i++] = new Sphere(Vec3( 0.0, 1.0, 0.0), 1.0, new Dielectric(1.5));
+    objects[i++] = new Sphere(Vec3( 0.0, 1.0, 0.0), 1.0, new Metal(Vec3(0.7, 0.6, 0.5), 0.0));
     objects[i++] = new Sphere(Vec3(-4.0, 1.0, 0.0), 1.0, new Lambertian(Vec3(0.4, 0.2, 0.1)));
-    objects[i++] = new Sphere(Vec3( 4.0, 1.0, 0.0), 1.0, new Metal(Vec3(0.7, 0.6, 0.5), 0.0));
+    objects[i++] = new Sphere(Vec3( 4.0, 1.0, 0.0), 1.0, new Dielectric(1.5));
 
     return new HittableList(objects, i);
 }
