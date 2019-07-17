@@ -9,7 +9,7 @@ import os, sys, time, math
 import numpy as np
 
 # path to the directory (relative or absolute)
-dirpath = sys.argv[1] if len(sys.argv) == 2 else r'.'
+dirpath = r'.'
 
 # get all entries in the directory w/ stats
 entries = (os.path.join(dirpath, fn) for fn in os.listdir(dirpath))
@@ -22,7 +22,7 @@ entries = [(stat[ST_CTIME], path) for stat, path in entries if S_ISREG(stat[ST_M
 entries = sorted(entries)
 
 # the README table has 3 columns by default
-cols = sys.argv[2] if len(sys.argv) == 3 else 3
+cols = int(sys.argv[1]) if len(sys.argv) == 2 else 3
 
 def readme_fname(path):
     return f"![]({os.path.basename(path)})"
@@ -31,6 +31,7 @@ table = np.array([readme_fname(path) for _, path in entries])
 # print(f"{table.size} entries, {cols} columns, {math.ceil(table.size / cols)} rows")
 
 table = table.reshape((-1, cols))
-print("|:---:" * cols + '|')
+print("| " * cols + '|')
+print("| :---: " * cols + '|')
 for row in table:
-    print('|' + '|'.join(row) + '|')
+    print('| ' + ' | '.join(row) + ' |')
