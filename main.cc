@@ -13,9 +13,12 @@ Vec3 visible_color(const Ray& r, Hittable* world, int depth);
 int MAX_DEPTH = 50; // maximum amount of calculated ray reflections
 
 int main() {
-    int nx = 200;
-    int ny = 100;
-    int ns = 100; // number of samples per pixel
+    // int nx = 200;
+    // int ny = 100;
+    // int ns = 100; // number of samples per pixel
+    int nx = 1200;
+    int ny = 800;
+    int ns = 10;
     
     cout << "P3\n" << nx << " " << ny << "\n255\n";
 
@@ -32,12 +35,12 @@ int main() {
     */
     Hittable* world = random_scene();
 
-    Vec3 look_from(3.0, 3.0, 2.0);
-    Vec3 look_at(0.0, 0.0, -1.0);
+    Vec3 look_from(13.0, 2.0, 3.0);
+    Vec3 look_at(0.0, 0.0, 0.0);
 
     float vfov = 20.0;
-    float lens_aperture = 2.0;
-    float dist_to_focus = (look_from - look_at).length();
+    float lens_aperture = 0.1;
+    float dist_to_focus = 10.0;
     
     Camera cam(lens_aperture, dist_to_focus, look_from, look_at, Vec3(0.0, 1.0, 0.0), vfov, float(nx) / float(ny));
     for (int j = ny-1; j >= 0; --j) {
