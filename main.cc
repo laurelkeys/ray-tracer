@@ -3,7 +3,7 @@
 #include "Camera.hh"
 #include "Sphere.hh"
 #include "HittableList.hh"
-#include "RandomNumber.hh"
+#include "Random.hh"
 
 using namespace std;
 
@@ -18,26 +18,30 @@ int main() {
     
     cout << "P3\n" << nx << " " << ny << "\n255\n";
 
-    Hittable* objects[5];
+    int number_of_objects = 5;
+    Hittable* objects[number_of_objects];
     objects[0] = new Sphere(Vec3( 0.0,    0.0, -1.0),   0.5, new Lambertian(Vec3(0.8, 0.3, 0.3)));
     objects[1] = new Sphere(Vec3( 0.0, -100.5, -1.0), 100.0, new Lambertian(Vec3(0.8, 0.8, 0.0)));
     objects[2] = new Sphere(Vec3( 1.0,    0.0, -1.0),   0.5, new Metal(Vec3(0.8, 0.6, 0.2)));
     // note: the following objects simulate a hollow sphere with 0.05 thickness (0.5 - 0.45)
     objects[3] = new Sphere(Vec3(-1.0,    0.0, -1.0),   0.5, new Dielectric(1.5));
     objects[4] = new Sphere(Vec3(-1.0,    0.0, -1.0), -0.45, new Dielectric(1.5));
-    Hittable* world = new HittableList(objects, 5);
+    Hittable* world = new HittableList(objects, number_of_objects);
 
-    Vec3 look_from(-2.0, 2.0, 1.0);
+    Vec3 look_from(3.0, 3.0, 2.0);
     Vec3 look_at(0.0, 0.0, -1.0);
     Vec3 view_up(0.0, 1.0, 0.0);
-    Camera cam(look_from, look_at, view_up, 30.0, float(nx) / float(ny));
+    float vfov = 20.0;
+    float lens_aperture = 2.0;
+    float dist_to_focus = (look_from - look_at).length();
+    Camera cam(lens_aperture, dist_to_focus, look_from, look_at, view_up, vfov, float(nx) / float(ny));
     for (int j = ny-1; j >= 0; --j) {
         for (int i = 0; i < nx; ++i) {
             Vec3 color(0.0, 0.0, 0.0);
             for (int s = 0; s < ns; ++s) {
                 // pixel sampling for antialiasing
-                float u = float(i + RandomNumber::in_01inc_1exc()) / float(nx);
-                float v = float(j + RandomNumber::in_01inc_1exc()) / float(ny);
+                float u = float(i + Random::number_in_01inc_1exc()) / float(nx);
+                float v = float(j + Random::number_in_01inc_1exc()) / float(ny);
                 Ray r = cam.get_ray(u, v);
                 Vec3 p = r.point_at_parameter(2.0);
                 color += visible_color(r, world, 0);

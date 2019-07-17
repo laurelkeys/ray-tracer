@@ -2,9 +2,8 @@
 #define MATERIALHH
 
 #include "Hittable.hh"
-#include "RandomNumber.hh"
+#include "Random.hh"
 
-Vec3 random_point_in_unit_sphere();
 Vec3 reflect(const Vec3& v, const Vec3& surface_normal);
 bool refract(const Vec3& v, const Vec3& surface_normal, float ni_over_nt, Vec3& refracted);
 float schlicks_approximation(float cos_theta, float refractive_index);
@@ -29,7 +28,7 @@ class Lambertian : public Material {
         virtual bool scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& r_scattered) const {
             // simulating a matte object reflection by choosing a 
             // random point in the unit sphere with center p(t) + N
-            Vec3 target = rec.p + rec.surface_normal + random_point_in_unit_sphere();
+            Vec3 target = rec.p + rec.surface_normal + Random::point_in_unit_sphere();
             r_scattered = Ray(rec.p, target - rec.p);
             attenuation = albedo;
             return true;
@@ -50,7 +49,7 @@ class Metal : public Material {
 
         virtual bool scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& r_scattered) const {
             Vec3 reflected = reflect(unit_vector(r_in.direction()), rec.surface_normal);
-            r_scattered = Ray(rec.p, reflected + fuzz * random_point_in_unit_sphere());
+            r_scattered = Ray(rec.p, reflected + fuzz * Random::point_in_unit_sphere());
             attenuation = albedo;
             return dot(r_scattered.direction(), rec.surface_normal) > 0.0;
         };
@@ -96,7 +95,7 @@ class Dielectric : public Material {
                 return true;
             }
 
-            if (RandomNumber::in_01inc_1exc() < reflect_prob) {
+            if (Random::number_in_01inc_1exc() < reflect_prob) {
                 r_scattered = Ray(rec.p, reflected);   
             } else {
                 r_scattered = Ray(rec.p, refracted);
@@ -128,20 +127,6 @@ bool refract(const Vec3& v, const Vec3& surface_normal, float ni_over_nt, Vec3& 
 
 Vec3 reflect(const Vec3& v, const Vec3& surface_normal) {
     return v - 2.0 * dot(v, surface_normal) * surface_normal;
-}
-
-Vec3 random_point_in_unit_sphere() {
-    Vec3 p;
-    do {
-        // we pick a random point in the unit cube with x, y, z \in [-1.0, 1.0]
-        // and if it's outside the sphere we reject it and try again
-        float px = RandomNumber::in_01inc_1exc();
-        float py = RandomNumber::in_01inc_1exc();
-        float pz = RandomNumber::in_01inc_1exc();
-        // obs.: 0.0 <= px, py, pz < 1.0, so we map [0.0, 1.0) to [-1.0, 1.0)
-        p = 2.0 * Vec3(px, py, pz) - Vec3(1.0, 1.0, 1.0);
-    } while (p.squared_length() >= 1.0);
-    return p;
 }
 
 #endif
