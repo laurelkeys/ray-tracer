@@ -30,7 +30,7 @@ int main() {
     Vec3 look_from(-2.0, 2.0, 1.0);
     Vec3 look_at(0.0, 0.0, -1.0);
     Vec3 view_up(0.0, 1.0, 0.0);
-    Camera cam(look_from, look_at, view_up, 90.0, float(nx) / float(ny));
+    Camera cam(look_from, look_at, view_up, 30.0, float(nx) / float(ny));
     for (int j = ny-1; j >= 0; --j) {
         for (int i = 0; i < nx; ++i) {
             Vec3 color(0.0, 0.0, 0.0);

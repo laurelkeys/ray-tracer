@@ -22,7 +22,7 @@ entries = [(stat[ST_CTIME], path) for stat, path in entries if S_ISREG(stat[ST_M
 entries = sorted(entries)
 
 # the README table has 3 columns by default
-cols = int(sys.argv[1]) if len(sys.argv) == 2 else 3
+cols = int(sys.argv[1]) if len(sys.argv) == 2 else 4
 
 def readme_fname(path):
     return f"![]({os.path.basename(path)})"
@@ -30,6 +30,7 @@ def readme_fname(path):
 table = np.array([readme_fname(path) for _, path in entries])
 # print(f"{table.size} entries, {cols} columns, {math.ceil(table.size / cols)} rows")
 
+table = np.append(table, np.tile([' '], cols - (table.size % cols)))
 table = table.reshape((-1, cols))
 print("| " * cols + '|')
 print("| :---: " * cols + '|')
