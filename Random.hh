@@ -7,21 +7,27 @@
 namespace Random {
     namespace {
         // ref.: https://stackoverflow.com/questions/686353/random-float-number-generation/17798317#17798317
+        // https://en.cppreference.com/w/cpp/numeric/random/random_device
+        // https://en.cppreference.com/w/cpp/numeric/random/mersenne_twister_engine
+        // https://en.cppreference.com/w/cpp/numeric/random/uniform_real_distribution
+
         std::random_device rd;
-        std::mt19937 e2(rd()); // engine
-        std::uniform_real_distribution<float> rand_dist(0.0, 1.0); // distribution \in [0.0, 1.0)
+        std::mt19937 gen(rd());
+        
+        // uniform distribution \in [0.0, 1.0)
+        std::uniform_real_distribution<float> rand_dist(0.0, 1.0);
     }
 
-    // random number \in [0.0, 1.0)
+    // random number \in [0.0, 1.0), with uniform distribution
     float number_in_01inc_1exc() {
-        return rand_dist(e2);
+        return rand_dist(gen);
     }
 
     Vec3 point_in_unit_sphere() {
         Vec3 p;
         do {
             // we pick a random point in the unit cube with x, y, z \in [-1.0, 1.0]
-            // and if it's outside the sphere we reject it and try again
+            // and if it's outside the sphere we reject it and try again (acceptance rate is 52%)
             float px = number_in_01inc_1exc();
             float py = number_in_01inc_1exc();
             float pz = number_in_01inc_1exc();
