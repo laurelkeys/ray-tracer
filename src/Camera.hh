@@ -6,6 +6,7 @@
 
 class Camera {
     public:
+        float time0, time1;
         float lens_radius;
 
         Vec3 u, v, w; // orthonormal basis ("width", "height", "depth")
@@ -17,7 +18,12 @@ class Camera {
 
         Camera(float aperture, float focus_dist, // used to simulate the camera's DOF
                Vec3 look_from, Vec3 look_at, Vec3 view_up, 
-               float vfov, float aspect, bool in_degrees = true) {
+               float vfov, float aspect, 
+               float t0, float t1, 
+               bool in_degrees = true) {
+            time0 = t0;
+            time1 = t1;
+
             float theta = in_degrees ? vfov * M_PI / 180 : vfov; // converts degrees to radians
             float half_height = tan(theta / 2);
             float half_width = aspect * half_height; // obs.: aspect ratio = width / height
@@ -43,6 +49,7 @@ class Camera {
             // s, t \in [0.0, 1.0]
             Vec3 rd = lens_radius * Random::point_in_unit_disk(); // random point in the camera lens
             Vec3 offset = u * rd.x() + v * rd.y();
+            float time = time0 + Random::number_ge_0_lt_1() * (time1 - time0);
 
             // note: u and v are orthogonal to the camera's facing direction (which is parallel to w)
             return Ray(origin + offset, lower_left_corner + s*horizontal + t*vertical - (origin + offset));

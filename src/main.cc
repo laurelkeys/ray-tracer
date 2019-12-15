@@ -49,8 +49,8 @@ int main() {
             Vec3 color(0.0, 0.0, 0.0);
             for (int s = 0; s < ns; ++s) {
                 // pixel sampling for antialiasing
-                float u = float(i + Random::number_in_01inc_1exc()) / float(nx);
-                float v = float(j + Random::number_in_01inc_1exc()) / float(ny);
+                float u = float(i + Random::number_ge_0_lt_1()) / float(nx);
+                float v = float(j + Random::number_ge_0_lt_1()) / float(ny);
                 Ray r = cam.get_ray(u, v);
                 color += visible_color(r, world, 0);
             }
@@ -93,10 +93,10 @@ Hittable* random_scene() {
     int i = 1;
     for (int a = -11; a < 11; ++a) {
         for (int b = -11; b < 11; ++b) {
-            float choose_mat = Random::number_in_01inc_1exc();
-            Vec3 center(a + 0.9 * Random::number_in_01inc_1exc(), 
+            float choose_mat = Random::number_ge_0_lt_1();
+            Vec3 center(a + 0.9 * Random::number_ge_0_lt_1(), 
                         0.2, 
-                        b + 0.9 * Random::number_in_01inc_1exc());
+                        b + 0.9 * Random::number_ge_0_lt_1());
             
             if ((center - Vec3(4.0, 0.2, 0.0)).length() > 0.9) {
                 Material* material_ptr;
@@ -104,17 +104,17 @@ Hittable* random_scene() {
                 if (choose_mat < 0.8) {
                     material_ptr = new Lambertian(
                         // albedo
-                        Vec3(Random::number_in_01inc_1exc() * Random::number_in_01inc_1exc(), 
-                             Random::number_in_01inc_1exc() * Random::number_in_01inc_1exc(), 
-                             Random::number_in_01inc_1exc() * Random::number_in_01inc_1exc()));
+                        Vec3(Random::number_ge_0_lt_1() * Random::number_ge_0_lt_1(), 
+                             Random::number_ge_0_lt_1() * Random::number_ge_0_lt_1(), 
+                             Random::number_ge_0_lt_1() * Random::number_ge_0_lt_1()));
                 } else if (choose_mat < 0.95) {
                     material_ptr = new Metal(
                         // albedo
-                        Vec3(0.5 * (1.0 + Random::number_in_01inc_1exc()), 
-                             0.5 * (1.0 + Random::number_in_01inc_1exc()), 
-                             0.5 * (1.0 + Random::number_in_01inc_1exc())), 
+                        Vec3(0.5 * (1.0 + Random::number_ge_0_lt_1()), 
+                             0.5 * (1.0 + Random::number_ge_0_lt_1()), 
+                             0.5 * (1.0 + Random::number_ge_0_lt_1())), 
                         // fuzz
-                        0.5 * Random::number_in_01inc_1exc());
+                        0.5 * Random::number_ge_0_lt_1());
                 } else {
                     material_ptr = new Dielectric(
                         // refractive_index

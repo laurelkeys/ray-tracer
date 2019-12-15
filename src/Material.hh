@@ -95,7 +95,7 @@ class Dielectric : public Material {
                 return true;
             }
 
-            if (Random::number_in_01inc_1exc() < reflect_prob) {
+            if (Random::number_ge_0_lt_1() < reflect_prob) {
                 r_scattered = Ray(rec.p, reflected);   
             } else {
                 r_scattered = Ray(rec.p, refracted);
