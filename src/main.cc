@@ -2,6 +2,7 @@
 #include "float.h"
 #include "Camera.hh"
 #include "Sphere.hh"
+#include "MovingSphere.hh"
 #include "HittableList.hh"
 #include "Random.hh"
 
@@ -34,16 +35,16 @@ int main() {
     objects[4] = new Sphere(Vec3(-1.0,    0.0, -1.0), -0.45, new Dielectric(1.5));
     Hittable* world = new HittableList(objects, number_of_objects);
     */
-    Hittable* world = wikipedia_scene(); // random_scene();
+    Hittable* world = random_scene(); // wikipedia_scene();
 
-    Vec3 look_from(0.0, 0.0, 6.0);
+    Vec3 look_from(13.0, 2.0, 3.0);
     Vec3 look_at(0.0, 0.0, 0.0);
 
-    float vfov = 30.0;
-    float lens_aperture = 0.1;
-    float dist_to_focus = (look_from - look_at).length();
+    float vfov = 20.0;
+    float lens_aperture = 0.01;
+    float dist_to_focus = 10.0;
     
-    Camera cam(lens_aperture, dist_to_focus, look_from, look_at, Vec3(0.0, 1.0, 0.0), vfov, float(nx) / float(ny));
+    Camera cam(lens_aperture, dist_to_focus, look_from, look_at, Vec3(0.0, 1.0, 0.0), vfov, float(nx) / float(ny), 0.0, 1.0);
     for (int j = ny-1; j >= 0; --j) {
         for (int i = 0; i < nx; ++i) {
             Vec3 color(0.0, 0.0, 0.0);
@@ -115,13 +116,18 @@ Hittable* random_scene() {
                              0.5 * (1.0 + Random::number_ge_0_lt_1())), 
                         // fuzz
                         0.5 * Random::number_ge_0_lt_1());
-                } else {
+                } else { // glass
                     material_ptr = new Dielectric(
                         // refractive_index
                         1.5);
                 }
 
-                objects[i++] = new Sphere(center, 0.2, material_ptr);
+                if (choose_mat < 0.8) { // diffuse
+                    objects[i++] = new MovingSphere(center, center + Vec3(0.0, 0.5 * Random::number_ge_0_lt_1(), 0.0), 
+                                                    0.0, 1.0, 0.2, material_ptr);
+                } else { // metal or glass
+                    objects[i++] = new Sphere(center, 0.2, material_ptr);
+                }
             }
         }
     }
