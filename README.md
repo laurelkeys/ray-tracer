@@ -4,7 +4,7 @@ An implementation of Peter Shirley's [*Ray Tracing in One Weekend* book series](
 - [ ] [Ray Tracing: The Next Week](https://raytracing.github.io/books/RayTracingTheNextWeek.html)
 - [ ] [Ray Tracing: The Rest of Your Life](https://raytracing.github.io/books/RayTracingTheRestOfYourLife.html)
 
-Check out many 200 x 100 rendered images [here](https://github.com/laurelkeys/ray-tracer/blob/master/i/README.md) (inside the [i/](https://github.com/laurelkeys/ray-tracer/blob/master/i/) folder).
+Check out many 200 x 100 rendered images [here](https://github.com/laurelkeys/ray-tracer/blob/master/i/one-weekend/README.md) (inside the [i/](https://github.com/laurelkeys/ray-tracer/blob/master/i/) folder).
 These images with few objects take less than a second to render (even with 100 samples per pixel).
 
 Below are some 1200 x 800 images with 10 samples per pixel, which take over a minute to render:
