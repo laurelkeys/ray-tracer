@@ -35,7 +35,6 @@ class Camera {
             u = unit_vector(cross(view_up, w));
             v = cross(w, u);
 
-            lower_left_corner = Vec3(-half_width, -half_height, -1.0);
             lower_left_corner = origin - focus_dist * (half_width * u + half_height * v + w);
 
             horizontal = 2.0 * half_width * focus_dist * u;
@@ -52,7 +51,7 @@ class Camera {
             float time = time0 + Random::number_ge_0_lt_1() * (time1 - time0);
 
             // note: u and v are orthogonal to the camera's facing direction (which is parallel to w)
-            return Ray(origin + offset, lower_left_corner + s*horizontal + t*vertical - (origin + offset));
+            return Ray(origin + offset, lower_left_corner + s*horizontal + t*vertical - (origin + offset), time);
         }
 };
 

@@ -66,6 +66,7 @@ bool MovingSphere::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) c
 }
 
 Vec3 MovingSphere::center(float time) const {
+    // lerp between center0 (time == time0) and center1 (time == time1)
     return center0 + ((time - time0) / (time1 - time0)) * (center1 - center0);
 }
 
