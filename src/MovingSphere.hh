@@ -21,6 +21,7 @@ class MovingSphere : public Hittable {
             material_ptr(material_ptr) { }
         
         virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
+        virtual bool bounding_box(float t0, float t1, AABB& box) const;
 
         Vec3 center(float time) const;
 };
