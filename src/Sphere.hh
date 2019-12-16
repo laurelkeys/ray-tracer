@@ -16,6 +16,7 @@ class Sphere : public Hittable {
             material_ptr(material_ptr) { }
 
         virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
+        virtual bool bounding_box(float t0, float t1, AABB& box) const;
 };
 
 bool Sphere::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const {
@@ -56,6 +57,12 @@ bool Sphere::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const {
     
     // note: we consider that if a ray tangentiates the sphere it does not hit it
     return false;
+}
+
+bool Sphere::bounding_box(float t0, float t1, AABB& box) const {
+    box = AABB(center - Vec3(radius, radius, radius),
+               center + Vec3(radius, radius, radius));
+    return true; // returns a bool because not all primitives have bounding boxes (e.g. infinite planes)
 }
 
 #endif
