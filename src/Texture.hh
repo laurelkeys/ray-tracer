@@ -1,0 +1,42 @@
+#ifndef TEXTUREHH
+#define TEXTUREHH
+
+#include "Vec3.hh"
+
+class Texture {
+    public:
+        virtual Vec3 value(float u, float v, const Vec3& p) const = 0;
+};
+
+class ConstantTexture : public Texture {
+    public:
+        Vec3 color;
+        
+        ConstantTexture() { }
+        ConstantTexture(Vec3 c) : color(c) { }
+        
+        virtual Vec3 value(float u, float v, const Vec3& p) const {
+            return color;
+        }
+};
+
+class CheckerTexture : public Texture {
+    public:
+        Texture *even;
+        Texture *odd;
+
+        CheckerTexture() { }
+        CheckerTexture(Texture *t0, Texture *t1) : 
+            even(t0), 
+            odd(t1) { }
+        
+        virtual Vec3 value(float u, float v, const Vec3& p) const {
+            float sines = sin(10 * p.x()) * sin(10 * p.y()) * sin(10 * p.z());
+            if (sines < 0)
+                return odd->value(u, v, p);
+            else
+                return even->value(u, v, p);
+        }
+};
+
+#endif

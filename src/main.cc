@@ -5,6 +5,7 @@
 #include "MovingSphere.hh"
 #include "HittableList.hh"
 #include "Random.hh"
+#include "Texture.hh"
 
 using namespace std;
 
@@ -27,8 +28,8 @@ int main() {
     /*
     int number_of_objects = 5;
     Hittable* objects[number_of_objects];
-    objects[0] = new Sphere(Vec3( 0.0,    0.0, -1.0),   0.5, new Lambertian(Vec3(0.8, 0.3, 0.3)));
-    objects[1] = new Sphere(Vec3( 0.0, -100.5, -1.0), 100.0, new Lambertian(Vec3(0.8, 0.8, 0.0)));
+    objects[0] = new Sphere(Vec3( 0.0,    0.0, -1.0),   0.5, new Lambertian(new ConstantTexture(Vec3(0.8, 0.3, 0.3))));
+    objects[1] = new Sphere(Vec3( 0.0, -100.5, -1.0), 100.0, new Lambertian(new ConstantTexture(Vec3(0.8, 0.8, 0.0))));
     objects[2] = new Sphere(Vec3( 1.0,    0.0, -1.0),   0.5, new Metal(Vec3(0.8, 0.6, 0.2)));
     // note: the following objects simulate a hollow sphere with 0.05 thickness (0.5 - 0.45)
     objects[3] = new Sphere(Vec3(-1.0,    0.0, -1.0),   0.5, new Dielectric(1.5));
@@ -89,7 +90,10 @@ Vec3 visible_color(const Ray& r, Hittable* world, int depth) {
 Hittable* random_scene() {
     int n = 500;
     Hittable** objects = new Hittable*[n+1];
-    objects[0] =  new Sphere(Vec3(0.0, -1000.0, 0.0), 1000.0, new Lambertian(Vec3(0.5, 0.5, 0.5)));
+    
+    Texture *checker = new CheckerTexture(new ConstantTexture(Vec3(0.2, 0.3, 0.1)),
+                                          new ConstantTexture(Vec3(0.9, 0.9, 0.9)));
+    objects[0] = new Sphere(Vec3(0.0, -1000.0, 0.0), 1000.0, new Lambertian(checker));
 
     int i = 1;
     for (int a = -11; a < 11; ++a) {
@@ -103,11 +107,11 @@ Hittable* random_scene() {
                 Material* material_ptr;
 
                 if (choose_mat < 0.8) {
-                    material_ptr = new Lambertian(
+                    material_ptr = new Lambertian(new ConstantTexture(
                         // albedo
                         Vec3(Random::number_ge_0_lt_1() * Random::number_ge_0_lt_1(), 
                              Random::number_ge_0_lt_1() * Random::number_ge_0_lt_1(), 
-                             Random::number_ge_0_lt_1() * Random::number_ge_0_lt_1()));
+                             Random::number_ge_0_lt_1() * Random::number_ge_0_lt_1())));
                 } else if (choose_mat < 0.95) {
                     material_ptr = new Metal(
                         // albedo
@@ -133,7 +137,7 @@ Hittable* random_scene() {
     }
 
     objects[i++] = new Sphere(Vec3( 0.0, 1.0, 0.0), 1.0, new Metal(Vec3(0.7, 0.6, 0.5), 0.0));
-    objects[i++] = new Sphere(Vec3(-4.0, 1.0, 0.0), 1.0, new Lambertian(Vec3(0.4, 0.2, 0.1)));
+    objects[i++] = new Sphere(Vec3(-4.0, 1.0, 0.0), 1.0, new Lambertian(new ConstantTexture(Vec3(0.4, 0.2, 0.1))));
     objects[i++] = new Sphere(Vec3( 4.0, 1.0, 0.0), 1.0, new Dielectric(1.5));
 
     return new HittableList(objects, i);
@@ -156,16 +160,16 @@ Hittable* wikipedia_scene() {
     Hittable** objects = new Hittable*[number_of_objects];
     
     float r = 1.0;
-    // objects[0] = new Sphere(Vec3(0.0, -1000.0 - r, 0.0), 1000.0, new Lambertian(white));
+    // objects[0] = new Sphere(Vec3(0.0, -1000.0 - r, 0.0), 1000.0, new Lambertian(new ConstantTexture(white)));
     // objects[0] = new Sphere(Vec3(0.0, -1000.0 - r, 0.0), 1000.0, new Metal(white));
     objects[0] = new Sphere(Vec3(0.0, -1000.0 - r, 0.0), 1000.0, new Dielectric(1.3));
-    objects[1] = new Sphere(Vec3(0.0, 0.0, 0.0), r, new Lambertian(salmon));
-    objects[2] = new Sphere(Vec3(0.3-r, -0.7*r, 1.8*r), 0.3*r, new Lambertian(yellow));
-    objects[3] = new Sphere(Vec3(1.7*r, -0.4*r, r), 0.6*r, new Lambertian(beige));
-    objects[4] = new Sphere(Vec3(-1.8*r, -0.3*r, r), 0.7*r, new Lambertian(pink2));
-    objects[5] = new Sphere(Vec3(3.1*r, 0.6*r, -r), 1.6*r, new Lambertian(pink));
-    objects[6] = new Sphere(Vec3(-3.8*r, 0.6*r, -r), 1.6*r, new Lambertian(pink3));
-    objects[7] = new Sphere(Vec3(-1.8*r, -0.5*r, -1.4*r), 0.5*r, new Lambertian(yellow2));
+    objects[1] = new Sphere(Vec3(0.0, 0.0, 0.0), r, new Lambertian(new ConstantTexture(salmon)));
+    objects[2] = new Sphere(Vec3(0.3-r, -0.7*r, 1.8*r), 0.3*r, new Lambertian(new ConstantTexture(yellow)));
+    objects[3] = new Sphere(Vec3(1.7*r, -0.4*r, r), 0.6*r, new Lambertian(new ConstantTexture(beige)));
+    objects[4] = new Sphere(Vec3(-1.8*r, -0.3*r, r), 0.7*r, new Lambertian(new ConstantTexture(pink2)));
+    objects[5] = new Sphere(Vec3(3.1*r, 0.6*r, -r), 1.6*r, new Lambertian(new ConstantTexture(pink)));
+    objects[6] = new Sphere(Vec3(-3.8*r, 0.6*r, -r), 1.6*r, new Lambertian(new ConstantTexture(pink3)));
+    objects[7] = new Sphere(Vec3(-1.8*r, -0.5*r, -1.4*r), 0.5*r, new Lambertian(new ConstantTexture(yellow2)));
     objects[8] = new Sphere(Vec3(1.5*r, -0.1*r, -1.7*r), 0.9*r, new Metal(white));
     // objects[8] = new Sphere(Vec3(1.5*r, -0.1*r, -1.7*r), 0.9*r, new Dielectric(1.3));
 

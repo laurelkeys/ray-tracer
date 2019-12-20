@@ -11,7 +11,7 @@ class BVHNode : public Hittable { // Bounding Volume Hierarchy
         Hittable *left;
         Hittable *right;
 
-        BVHNode() {}
+        BVHNode() { }
         BVHNode(Hittable **list, int n, float time0, float time1);
 
         virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;

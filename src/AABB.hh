@@ -13,7 +13,7 @@ class AABB { // Axis-Aligned Bounding Box
         Vec3 _min;
         Vec3 _max;
 
-        AABB() {}
+        AABB() { }
         AABB(const Vec3& a, const Vec3& b) : 
             _min(a), 
             _max(b) { }
