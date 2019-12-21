@@ -2,6 +2,7 @@
 #define TEXTUREHH
 
 #include "Vec3.hh"
+#include "Perlin.hh"
 
 class Texture {
     public:
@@ -36,6 +37,17 @@ class CheckerTexture : public Texture {
                 return odd->value(u, v, p);
             else
                 return even->value(u, v, p);
+        }
+};
+
+class NoiseTexture : public Texture {
+    public:
+        Perlin noise;
+        
+        NoiseTexture() { }
+        
+        virtual Vec3 value(float u, float v, const Vec3& p) const {
+            return Vec3(1, 1, 1) * noise.noise(p);
         }
 };
 

@@ -9,6 +9,8 @@
 
 using namespace std;
 
+Hittable* two_perlin_spheres();
+Hittable* two_spheres();
 Hittable* random_scene();
 Hittable* wikipedia_scene();
 Vec3 visible_color(const Ray& r, Hittable* world, int depth);
@@ -36,13 +38,13 @@ int main() {
     objects[4] = new Sphere(Vec3(-1.0,    0.0, -1.0), -0.45, new Dielectric(1.5));
     Hittable* world = new HittableList(objects, number_of_objects);
     */
-    Hittable* world = random_scene(); // wikipedia_scene();
+    Hittable* world = two_perlin_spheres(); // two_spheres(); // random_scene(); // wikipedia_scene();
 
     Vec3 look_from(13.0, 2.0, 3.0);
     Vec3 look_at(0.0, 0.0, 0.0);
 
     float vfov = 20.0;
-    float lens_aperture = 0.01;
+    float lens_aperture = 0.0;
     float dist_to_focus = 10.0;
     
     Camera cam(lens_aperture, dist_to_focus, look_from, look_at, Vec3(0.0, 1.0, 0.0), vfov, float(nx) / float(ny), 0.0, 1.0);
@@ -85,6 +87,32 @@ Vec3 visible_color(const Ray& r, Hittable* world, int depth) {
     float t = 0.5 * (unit_direction.y() + 1.0);
     // blends white and blue based on the ray's y coordinate
     return (1.0 - t) * Vec3(1.0, 1.0, 1.0) + t * Vec3(0.5, 0.7, 1.0);
+}
+
+// Scenes /////////////////////////////////////
+
+Hittable* two_perlin_spheres() {
+    // Texture *perlin_texture = new NoiseTexture();
+    // Hittable **list = new Hittable*[2];
+    // list[0] = new Sphere(Vec3(0, -1000, 0), 1000, new Lambertian(perlin_texture));
+    // list[1] = new Sphere(Vec3(0, 2, 0), 2, new Lambertian(perlin_texture));
+    // return new HittableList(list, 2);
+    Texture *perlin_texture = new NoiseTexture();
+    int n = 2;
+    Hittable **list = new Hittable*[n+1];
+    list[0] = new Sphere(Vec3(0, -1000, 0), 1000, new Lambertian(perlin_texture));
+    list[1] = new Sphere(Vec3(0, 2, 0), 2, new Lambertian(perlin_texture));
+    return new HittableList(list, n);
+}
+
+Hittable* two_spheres() {
+    Texture *checker = new CheckerTexture(new ConstantTexture(Vec3(0.2, 0.3, 0.1)),
+                                          new ConstantTexture(Vec3(0.9, 0.9, 0.9)));
+    int n = 50;
+    Hittable **list = new Hittable*[n+1];
+    list[0] = new Sphere(Vec3(0,-10, 0), 10, new Lambertian(checker));
+    list[1] = new Sphere(Vec3(0, 10, 0), 10, new Lambertian(checker));
+    return new HittableList(list, 2);
 }
 
 Hittable* random_scene() {
