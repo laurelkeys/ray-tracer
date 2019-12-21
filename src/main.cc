@@ -92,24 +92,17 @@ Vec3 visible_color(const Ray& r, Hittable* world, int depth) {
 // Scenes /////////////////////////////////////
 
 Hittable* two_perlin_spheres() {
-    // Texture *perlin_texture = new NoiseTexture();
-    // Hittable **list = new Hittable*[2];
-    // list[0] = new Sphere(Vec3(0, -1000, 0), 1000, new Lambertian(perlin_texture));
-    // list[1] = new Sphere(Vec3(0, 2, 0), 2, new Lambertian(perlin_texture));
-    // return new HittableList(list, 2);
     Texture *perlin_texture = new NoiseTexture();
-    int n = 2;
-    Hittable **list = new Hittable*[n+1];
+    Hittable **list = new Hittable*[2];
     list[0] = new Sphere(Vec3(0, -1000, 0), 1000, new Lambertian(perlin_texture));
     list[1] = new Sphere(Vec3(0, 2, 0), 2, new Lambertian(perlin_texture));
-    return new HittableList(list, n);
+    return new HittableList(list, 2);
 }
 
 Hittable* two_spheres() {
     Texture *checker = new CheckerTexture(new ConstantTexture(Vec3(0.2, 0.3, 0.1)),
                                           new ConstantTexture(Vec3(0.9, 0.9, 0.9)));
-    int n = 50;
-    Hittable **list = new Hittable*[n+1];
+    Hittable **list = new Hittable*[2];
     list[0] = new Sphere(Vec3(0,-10, 0), 10, new Lambertian(checker));
     list[1] = new Sphere(Vec3(0, 10, 0), 10, new Lambertian(checker));
     return new HittableList(list, 2);
