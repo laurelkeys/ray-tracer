@@ -3,6 +3,17 @@
 
 #include "Random.hh"
 
+inline float trilinear_interp(float c[2][2][2], float u, float v, float w) {
+    float acc = 0;
+    for (int i = 0; i <= 1; ++i)
+        for (int j = 0; j <= 1; ++j)
+            for (int k = 0; k <= 1; ++k)
+                acc += (i * u + (1-i) * (1-u)) *
+                       (j * v + (1-j) * (1-v)) *
+                       (k * w + (1-k) * (1-w)) * c[i][j][k];
+    return acc;
+}
+
 class Perlin {
     public:
         static float *ranfloat;
@@ -15,11 +26,21 @@ class Perlin {
             int i = floor(p.x());
             int j = floor(p.y());
             int k = floor(p.z());
+
+            float c[2][2][2];
+            for (int di = 0; di <= 1; ++di)
+                for (int dj = 0; dj <= 1; ++dj)
+                    for (int dk = 0; dk <= 1; ++dk)
+                        c[di][dj][dk] = ranfloat[
+                            perm_x[(i + di) & 255] ^
+                            perm_y[(j + dj) & 255] ^
+                            perm_z[(k + dk) & 255]
+                        ];
+            
             float u = p.x() - i;
             float v = p.y() - j;
             float w = p.z() - k;
-            // FIXME values are sometimes negative
-            return ranfloat[perm_x[i < 0 ? -i : i] ^ perm_y[j < 0 ? -j : j] ^ perm_z[k < 0 ? -k : k]];
+            return trilinear_interp(c, u, v, w);
         }
 };
 
