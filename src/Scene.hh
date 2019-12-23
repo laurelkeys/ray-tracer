@@ -1,11 +1,14 @@
 #ifndef SCENEHH
 #define SCENEHH
 
-#include "Sphere.hh"
-#include "MovingSphere.hh"
-#include "HittableList.hh"
+#include "Vec3.hh"
 #include "Random.hh"
 #include "Texture.hh"
+#include "Material.hh"
+#include "Hittable.hh"
+#include "HittableList.hh"
+#include "Sphere.hh"
+#include "MovingSphere.hh"
 
 namespace Scene {
     Hittable* three_spheres();

@@ -1,6 +1,7 @@
 #ifndef AABBHH
 #define AABBHH
 
+#include "Vec3.hh"
 #include "Ray.hh"
 
 // note: by not worrying about NaN and other exceptions these 

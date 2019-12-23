@@ -1,6 +1,7 @@
 #ifndef PERLINHH
 #define PERLINHH
 
+#include "Vec3.hh"
 #include "Random.hh"
 
 inline float trilinear_interp(float c[2][2][2], float u, float v, float w) {

@@ -1,9 +1,11 @@
 #ifndef MATERIALHH
 #define MATERIALHH
 
-#include "Hittable.hh"
+#include "Vec3.hh"
+#include "Ray.hh"
 #include "Random.hh"
 #include "Texture.hh"
+#include "Hittable.hh"
 
 Vec3 reflect(const Vec3& v, const Vec3& surface_normal);
 bool refract(const Vec3& v, const Vec3& surface_normal, float ni_over_nt, Vec3& refracted);

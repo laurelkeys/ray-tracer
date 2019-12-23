@@ -1,6 +1,10 @@
 #ifndef MOVINGSPHEREHH
 #define MOVINGSPHEREHH
 
+#include "Vec3.hh"
+#include "Ray.hh"
+#include "AABB.hh"
+#include "Hittable.hh"
 #include "Material.hh"
 
 class MovingSphere : public Hittable {

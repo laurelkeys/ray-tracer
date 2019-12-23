@@ -1,6 +1,7 @@
 #ifndef CAMERAHH
 #define CAMERAHH
 
+#include "Vec3.hh"
 #include "Ray.hh"
 #include "Random.hh"
 

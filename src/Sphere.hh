@@ -1,7 +1,11 @@
 #ifndef SPHEREHH
 #define SPHEREHH
 
+#include "Vec3.hh"
+#include "Ray.hh"
+#include "AABB.hh"
 #include "Material.hh"
+#include "Hittable.hh"
 
 class Sphere : public Hittable {
     public:

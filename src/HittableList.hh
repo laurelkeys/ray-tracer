@@ -1,6 +1,8 @@
 #ifndef HITTABLELISTHH
 #define HITTABLELISTHH
 
+#include "Ray.hh"
+#include "AABB.hh"
 #include "Hittable.hh"
 
 class HittableList : public Hittable {

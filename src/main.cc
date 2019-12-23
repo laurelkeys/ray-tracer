@@ -1,6 +1,12 @@
 #include <iostream>
+
 #include "float.h"
+
+#include "Vec3.hh"
+#include "Ray.hh"
+#include "Random.hh"
 #include "Camera.hh"
+#include "Hittable.hh"
 #include "Scene.hh"
 
 using namespace std;
