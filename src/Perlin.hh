@@ -41,6 +41,11 @@ class Perlin {
             float u = p.x() - i;
             float v = p.y() - j;
             float w = p.z() - k;
+            // Hermite cubic to round off the interpolation
+            // and minimize the grid features that appear (Mach bands)
+            u = u*u * (3 - 2*u);
+            v = v*v * (3 - 2*v);
+            w = w*w * (3 - 2*w);
             return trilinear_interp(c, u, v, w);
         }
 };

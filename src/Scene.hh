@@ -31,7 +31,7 @@ Hittable* Scene::three_spheres() {
 }
 
 Hittable* Scene::two_perlin_spheres() {
-    Texture *perlin_texture = new NoiseTexture();
+    Texture *perlin_texture = new NoiseTexture(3.5);
     Hittable **list = new Hittable*[2];
     list[0] = new Sphere(Vec3(0, -1000, 0), 1000, new Lambertian(perlin_texture));
     list[1] = new Sphere(Vec3(0, 2, 0), 2, new Lambertian(perlin_texture));

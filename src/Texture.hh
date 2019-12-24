@@ -43,11 +43,15 @@ class CheckerTexture : public Texture {
 class NoiseTexture : public Texture {
     public:
         Perlin noise;
+
+        float scale = 1.0;
         
         NoiseTexture() { }
+        NoiseTexture(float scale) : 
+            scale(scale) { }
         
         virtual Vec3 value(float u, float v, const Vec3& p) const {
-            return Vec3(1, 1, 1) * noise.noise(p);
+            return Vec3(1, 1, 1) * noise.noise(scale * p);
         }
 };
 
