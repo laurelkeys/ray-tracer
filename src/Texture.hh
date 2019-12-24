@@ -51,7 +51,7 @@ class NoiseTexture : public Texture {
             scale(scale) { }
         
         virtual Vec3 value(float u, float v, const Vec3& p) const {
-            float perlin_noise = noise.noise(scale * p);
+            float perlin_noise = sin(scale * p.z() + 10 * noise.turbulence(p));
             // scale and bias the noise to remap it from [-1, 1] to [0, 1]
             return Vec3(1, 1, 1) * (0.5 * (1 + perlin_noise));
         }

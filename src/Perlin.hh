@@ -52,6 +52,18 @@ class Perlin {
             float w = p.z() - k;
             return perlin_interp(c, u, v, w);
         }
+
+        float turbulence(const Vec3& p, int depth = 7) const {
+            float acc = 0;
+            Vec3 temp_p = p;
+            float weight = 1;
+            for (int i = 0; i < depth; ++i) {
+                acc += weight * noise(temp_p);
+                weight *= 0.5;
+                temp_p *= 2;
+            }
+            return fabs(acc);
+        }
 };
 
 static Vec3* Perlin_generate() {
