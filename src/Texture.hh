@@ -57,4 +57,32 @@ class NoiseTexture : public Texture {
         }
 };
 
+class ImageTexture : public Texture {
+    public:
+        int nx, ny;
+        unsigned char *data;
+        
+        ImageTexture() { }
+        ImageTexture(unsigned char *pixels, int A, int B) : 
+            data(pixels), 
+            nx(A), 
+            ny(B) { }
+        
+        virtual Vec3 value(float u, float v, const Vec3& p) const;
+};
+
+Vec3 ImageTexture::value(float u, float v, const Vec3& p) const {
+    int i = u * nx;
+    int j = (1-v) * ny - 0.001;
+    i = (i < 0) ? 0 : (i > nx-1) ? nx-1 : i; // [0, nx-1]
+    j = (j < 0) ? 0 : (j > ny-1) ? ny-1 : j; // [0, ny-1]
+    
+    int idx = 3*i + 3*nx*j;
+    float r = int(data[ idx ]) / 255.0;
+    float g = int(data[idx+1]) / 255.0;
+    float b = int(data[idx+2]) / 255.0;
+    
+    return Vec3(r, g, b);
+}
+
 #endif

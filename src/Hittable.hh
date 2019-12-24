@@ -9,6 +9,7 @@ class Material; // forward declaration (so Material and Hittable can refer to ea
 
 struct HitRecord {
     float t;
+    float u, v; // UV mapping
     Vec3 p; // point p(t) where there was a hit
     Vec3 surface_normal; // versor that points out from the surface
     Material* material_ptr;

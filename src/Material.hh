@@ -33,7 +33,7 @@ class Lambertian : public Material {
             // random point in the unit sphere with center p(t) + N
             Vec3 target = rec.p + rec.surface_normal + Random::point_in_unit_sphere();
             r_scattered = Ray(rec.p, target - rec.p, r_in.time());
-            attenuation = albedo->value(0, 0, rec.p);
+            attenuation = albedo->value(rec.u, rec.v, rec.p);
             return true;
             // note: we could also only scatter with some probability P, and have attenuation = (1/P)*albedo
         };

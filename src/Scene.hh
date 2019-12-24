@@ -1,6 +1,9 @@
 #ifndef SCENEHH
 #define SCENEHH
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 #include "Vec3.hh"
 #include "Random.hh"
 #include "Texture.hh"
@@ -11,11 +14,19 @@
 #include "MovingSphere.hh"
 
 namespace Scene {
+    Hittable* earth();
     Hittable* three_spheres();
     Hittable* two_perlin_spheres();
     Hittable* two_spheres();
     Hittable* random_scene();
     Hittable* wikipedia_scene();
+}
+
+Hittable* Scene::earth() {
+    int nx, ny, nn;
+    unsigned char *texture_pixels = stbi_load("earthmap (1).jpg", &nx, &ny, &nn, 0);
+    Material *material_ptr = new Lambertian(new ImageTexture(texture_pixels, nx, ny));
+    return new Sphere(Vec3(0, 0, 0), 2, material_ptr);
 }
 
 Hittable* Scene::three_spheres() {

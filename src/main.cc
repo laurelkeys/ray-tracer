@@ -1,6 +1,5 @@
 #include <iostream>
-
-#include "float.h"
+#include <float.h>
 
 #include "Vec3.hh"
 #include "Ray.hh"
@@ -25,7 +24,7 @@ int main() {
     
     cout << "P3\n" << nx << " " << ny << "\n255\n";
 
-    Hittable* world = Scene::two_perlin_spheres();
+    Hittable* world = Scene::earth();
 
     Vec3 look_from(13.0, 2.0, 3.0);
     Vec3 look_at(0.0, 0.0, 0.0);
@@ -61,14 +60,14 @@ int main() {
 }
 
 Vec3 visible_color(const Ray& r, Hittable* world, int depth) {
-    HitRecord rec;
+    HitRecord rec;    
     float t_min = 0.001; // decrease "shadow acne"
     if (world->hit(r, t_min, FLT_MAX, rec)) {
         Ray r_scattered;
         Vec3 attenuation;
         if (depth < MAX_DEPTH && rec.material_ptr->scatter(r, rec, attenuation, r_scattered)) {
             // increases depth to limit the amount of calculated reflections
-            return attenuation * visible_color(r_scattered, world, depth+1);
+            return attenuation;// * visible_color(r_scattered, world, depth+1);
         }
         return Vec3(0.0, 0.0, 0.0); // BLACK
     }

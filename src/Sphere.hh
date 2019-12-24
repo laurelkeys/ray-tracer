@@ -7,6 +7,13 @@
 #include "Material.hh"
 #include "Hittable.hh"
 
+void get_sphere_uv(const Vec3& p, float& u, float& v) {
+    float phi = atan2(p.z(), p.x()); //   [-π, π]
+    float theta = asin(p.y());       // [-π/2, π/2]
+    u = 1 - (phi + M_PI) / (2*M_PI); //   [-1, 1]
+    v = (theta + M_PI/2) / M_PI;     //   [ 0, 1]
+}
+
 class Sphere : public Hittable {
     public:
         Vec3 center;
@@ -44,6 +51,7 @@ bool Sphere::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const {
         if (t_min < t && t < t_max) {
             rec.t = t;
             rec.p = r.point_at_parameter(t);
+            get_sphere_uv((rec.p - center) / radius, rec.u, rec.v);
             rec.surface_normal = (rec.p - center) / radius; // versor
             rec.material_ptr = material_ptr;
             return true;
@@ -53,6 +61,7 @@ bool Sphere::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const {
         if (t_min < t && t < t_max) {
             rec.t = t;
             rec.p = r.point_at_parameter(t);
+            get_sphere_uv((rec.p - center) / radius, rec.u, rec.v);
             rec.surface_normal = (rec.p - center) / radius; // versor
             rec.material_ptr = material_ptr;
             return true;

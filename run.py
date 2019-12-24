@@ -14,7 +14,7 @@ if __name__ == "__main__":
 
     run(["g++", "-o", "main", "main.cc"], shell=True, cwd=os.path.join(os.getcwd(), "src"))    
     with open(f"{img_name}.ppm", "w+") as output:
-        run(["./src/main"], stdout=output)    
+        run(["./src/main"], stdout=output, cwd=os.path.join(os.getcwd(), "src"))    
     run(["magick", "convert", f"{img_name}.ppm", f"{img_name}.png"])
 
     if not args.keep_ppm:
