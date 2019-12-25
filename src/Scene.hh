@@ -16,13 +16,32 @@
 #include "AARect.hh"
 
 namespace Scene {
-    Hittable *simple_light();
+    Hittable* cornell_box();
+    Hittable* simple_light();
     Hittable* earth();
     Hittable* three_spheres();
     Hittable* two_perlin_spheres();
     Hittable* two_spheres();
     Hittable* random_scene();
     Hittable* wikipedia_scene();
+}
+
+Hittable* Scene::cornell_box() {
+    Hittable **list = new Hittable*[6];
+    
+    Material *red   = new Lambertian(new ConstantTexture(Vec3(0.65, 0.05, 0.05)));
+    Material *white = new Lambertian(new ConstantTexture(Vec3(0.73, 0.73, 0.73)));
+    Material *green = new Lambertian(new ConstantTexture(Vec3(0.12, 0.45, 0.15)));
+    Material *light = new DiffuseLight(new ConstantTexture(Vec3(15, 15, 15)));
+
+    int i = 0;
+    list[i++] = new FlipNormals(new YZRect(0, 555, 0, 555, 555, green));
+    list[i++] = new YZRect(0, 555, 0, 555, 0, red);
+    list[i++] = new XZRect(213, 343, 227, 332, 554, light);
+    list[i++] = new FlipNormals(new XZRect(0, 555, 0, 555, 555, white));
+    list[i++] = new XZRect(0, 555, 0, 555, 0, white);
+    list[i++] = new FlipNormals(new XYRect(0, 555, 0, 555, 555, white));
+    return new HittableList(list, i);
 }
 
 Hittable* Scene::simple_light() {

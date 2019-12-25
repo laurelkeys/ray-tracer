@@ -24,13 +24,14 @@ int main() {
     
     cout << "P3\n" << nx << " " << ny << "\n255\n";
 
-    Hittable* world = Scene::simple_light();
+    Hittable* world = Scene::cornell_box();
 
     // Vec3 look_from(13.0, 2.0, 3.0);
-    Vec3 look_from(23.0, 6.0, 9.0);
-    Vec3 look_at(0.0, 2.0, 0.0);
+    // Vec3 look_at(0.0, 0.0, 0.0);
+    Vec3 look_from(278, 278, -800);
+    Vec3 look_at(278, 278, 0);
 
-    float vfov = 20.0;
+    float vfov = 40.0;
     float lens_aperture = 0.0;
     float dist_to_focus = 10.0;
     
