@@ -16,6 +16,26 @@ class Material {
         virtual bool scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& r_scattered) const = 0;
         // note: the pure virtual function makes Material an abstract class, so it can't be instantiated,
         //       and a derived class that implements scatter() must be used (i.e. "= 0" makes overriding required)
+        
+        virtual Vec3 emitted(float u, float v, const Vec3& p) const {
+            return Vec3(0, 0, 0); // BLACK
+        }
+};
+
+class DiffuseLight : public Material {
+    public:
+        Texture *emit;
+
+        DiffuseLight(Texture *a) : 
+            emit(a) { }
+        
+        virtual bool scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& scattered) const {
+            return false;
+        }
+
+        virtual Vec3 emitted(float u, float v, const Vec3& p) const {
+            return emit->value(u, v, p);
+        }
 };
 
 // defines a matte material (a diffusely reflecting surface)

@@ -10,10 +10,13 @@
 #include "Material.hh"
 #include "Hittable.hh"
 #include "HittableList.hh"
+#include "BVHNode.hh"
 #include "Sphere.hh"
 #include "MovingSphere.hh"
+#include "AARect.hh"
 
 namespace Scene {
+    Hittable *simple_light();
     Hittable* earth();
     Hittable* three_spheres();
     Hittable* two_perlin_spheres();
@@ -22,9 +25,21 @@ namespace Scene {
     Hittable* wikipedia_scene();
 }
 
+Hittable* Scene::simple_light() {
+    Texture *perlin_texture = new NoiseTexture(4);
+    Hittable **list = new Hittable*[4];
+    list[0] = new Sphere(Vec3(0, -1000, 0), 1000, new Lambertian(perlin_texture));
+    list[1] = new Sphere(Vec3(0, 2, 0), 2, new Lambertian(perlin_texture));
+    list[2] = new Sphere(Vec3(0, 7, 0), 2, 
+                         new DiffuseLight(new ConstantTexture(Vec3(4, 4, 4))));
+    list[3] = new XYRect(3, 5, 1, 3, -2, // plane z(t) = -2
+                         new DiffuseLight(new ConstantTexture(Vec3(4, 4, 4))));
+    return new HittableList(list, 4);
+}
+
 Hittable* Scene::earth() {
     int nx, ny, nn;
-    unsigned char *texture_pixels = stbi_load("earthmap (1).jpg", &nx, &ny, &nn, 0);
+    unsigned char *texture_pixels = stbi_load("earthmap.jpg", &nx, &ny, &nn, 0);
     Material *material_ptr = new Lambertian(new ImageTexture(texture_pixels, nx, ny));
     return new Sphere(Vec3(0, 0, 0), 2, material_ptr);
 }
@@ -111,7 +126,8 @@ Hittable* Scene::random_scene() {
     objects[i++] = new Sphere(Vec3(-4.0, 1.0, 0.0), 1.0, new Lambertian(new ConstantTexture(Vec3(0.4, 0.2, 0.1))));
     objects[i++] = new Sphere(Vec3( 4.0, 1.0, 0.0), 1.0, new Dielectric(1.5));
 
-    return new HittableList(objects, i);
+    // return new HittableList(objects, i);
+    return new BVHNode(objects, i, 0.0, 1.0);
 }
 
 Hittable* Scene::wikipedia_scene() {

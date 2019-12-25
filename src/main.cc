@@ -24,10 +24,11 @@ int main() {
     
     cout << "P3\n" << nx << " " << ny << "\n255\n";
 
-    Hittable* world = Scene::earth();
+    Hittable* world = Scene::simple_light();
 
-    Vec3 look_from(13.0, 2.0, 3.0);
-    Vec3 look_at(0.0, 0.0, 0.0);
+    // Vec3 look_from(13.0, 2.0, 3.0);
+    Vec3 look_from(23.0, 6.0, 9.0);
+    Vec3 look_at(0.0, 2.0, 0.0);
 
     float vfov = 20.0;
     float lens_aperture = 0.0;
@@ -59,21 +60,26 @@ int main() {
     }
 }
 
+Vec3 sky_gradient(const Ray& r) {
+    Vec3 unit_direction = unit_vector(r.direction());
+    float t = 0.5 * (unit_direction.y() + 1.0);
+    // blends white and blue based on the ray's y coordinate
+    return (1.0 - t) * Vec3(1.0, 1.0, 1.0) + t * Vec3(0.5, 0.7, 1.0);
+}
+
 Vec3 visible_color(const Ray& r, Hittable* world, int depth) {
     HitRecord rec;    
     float t_min = 0.001; // decrease "shadow acne"
     if (world->hit(r, t_min, FLT_MAX, rec)) {
         Ray r_scattered;
         Vec3 attenuation;
+        Vec3 emitted = rec.material_ptr->emitted(rec.u, rec.v, rec.p);
         if (depth < MAX_DEPTH && rec.material_ptr->scatter(r, rec, attenuation, r_scattered)) {
             // increases depth to limit the amount of calculated reflections
-            return attenuation;// * visible_color(r_scattered, world, depth+1);
+            return emitted + attenuation * visible_color(r_scattered, world, depth+1);
         }
-        return Vec3(0.0, 0.0, 0.0); // BLACK
+        return emitted;
     }
-    
-    Vec3 unit_direction = unit_vector(r.direction());
-    float t = 0.5 * (unit_direction.y() + 1.0);
-    // blends white and blue based on the ray's y coordinate
-    return (1.0 - t) * Vec3(1.0, 1.0, 1.0) + t * Vec3(0.5, 0.7, 1.0);
+    // return sky_gradient(r);
+    return Vec3(0.0, 0.0, 0.0); // BLACK
 }
