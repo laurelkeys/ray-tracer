@@ -17,7 +17,7 @@ int MAX_DEPTH = 50; // maximum amount of calculated ray reflections
 int main() {
     int nx = 200;
     int ny = 100;
-    int ns = 100; // number of samples per pixel
+    int ns = 400; // number of samples per pixel
     // int nx = 1200;
     // int ny = 800;
     // int ns = 10;

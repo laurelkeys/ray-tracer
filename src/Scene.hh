@@ -14,6 +14,7 @@
 #include "Sphere.hh"
 #include "MovingSphere.hh"
 #include "AARect.hh"
+#include "Box.hh"
 
 namespace Scene {
     Hittable* cornell_box();
@@ -27,7 +28,7 @@ namespace Scene {
 }
 
 Hittable* Scene::cornell_box() {
-    Hittable **list = new Hittable*[6];
+    Hittable **list = new Hittable*[8];
     
     Material *red   = new Lambertian(new ConstantTexture(Vec3(0.65, 0.05, 0.05)));
     Material *white = new Lambertian(new ConstantTexture(Vec3(0.73, 0.73, 0.73)));
@@ -41,6 +42,8 @@ Hittable* Scene::cornell_box() {
     list[i++] = new FlipNormals(new XZRect(0, 555, 0, 555, 555, white));
     list[i++] = new XZRect(0, 555, 0, 555, 0, white);
     list[i++] = new FlipNormals(new XYRect(0, 555, 0, 555, 555, white));
+    list[i++] = new Box(Vec3(130, 0,  65), Vec3(295, 165, 230), white);
+    list[i++] = new Box(Vec3(265, 0, 295), Vec3(430, 330, 460), white);
     return new HittableList(list, i);
 }
 
