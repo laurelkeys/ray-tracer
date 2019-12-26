@@ -43,8 +43,16 @@ Hittable* Scene::cornell_box() {
     list[i++] = new FlipNormals(new XZRect(0, 555, 0, 555, 555, white));
     list[i++] = new XZRect(0, 555, 0, 555, 0, white);
     list[i++] = new FlipNormals(new XYRect(0, 555, 0, 555, 555, white));
-    list[i++] = new Box(Vec3(130, 0,  65), Vec3(295, 165, 230), white);
-    list[i++] = new Box(Vec3(265, 0, 295), Vec3(430, 330, 460), white);
+    list[i++] = new Translate(
+                    new RotateY(new Box(Vec3(0, 0, 0), Vec3(165, 165, 165), white), 
+                                -18), // rotation
+                    Vec3(130, 0, 65)  // translation
+                );
+    list[i++] = new Translate(
+                    new RotateY(new Box(Vec3(0, 0, 0), Vec3(165, 330, 165), white), 
+                                15),  // rotation
+                    Vec3(265, 0, 295) // translation
+                );
     return new HittableList(list, i);
 }
 
