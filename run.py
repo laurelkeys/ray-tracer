@@ -15,9 +15,9 @@ if __name__ == "__main__":
 
     start_time = time()
 
-    run(["g++", "-o", "main", "main.cc"], shell=True, cwd=os.path.join(os.getcwd(), "src"))    
+    run(["g++", "-o", "main", "main.cc"], cwd=os.path.join(os.getcwd(), "src"))
     with open(f"{img_name}.ppm", "w+") as output:
-        run(["./src/main"], stdout=output, cwd=os.path.join(os.getcwd(), "src"))    
+        run(["./src/main"], stdout=output, cwd=os.path.join(os.getcwd(), "src"))
     run(["magick", "convert", f"{img_name}.ppm", f"{img_name}.png"])
     
     print(f"Δt = {(time() - start_time):.2f}s")
