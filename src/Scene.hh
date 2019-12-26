@@ -10,6 +10,7 @@
 #include "Material.hh"
 #include "Hittable.hh"
 #include "HittableList.hh"
+#include "Transformations.hh"
 #include "BVHNode.hh"
 #include "Sphere.hh"
 #include "MovingSphere.hh"

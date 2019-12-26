@@ -23,24 +23,4 @@ class Hittable {
         //       and a derived class that implements hit() must be used (i.e. "= 0" makes overriding required)
 };
 
-class FlipNormals : public Hittable {
-    public:
-        Hittable *ptr;
-
-        FlipNormals(Hittable *p) : 
-            ptr(p) { }
-
-        virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const {
-            if (ptr->hit(r, t_min, t_max, rec)) {
-                rec.surface_normal = -rec.surface_normal;
-                return true;
-            }
-            return false;
-        }
-        
-        virtual bool bounding_box(float t0, float t1, AABB& box) const {
-            return ptr->bounding_box(t0, t1, box);
-        }
-};
-
 #endif

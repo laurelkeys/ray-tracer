@@ -7,6 +7,7 @@
 #include "Material.hh"
 #include "Hittable.hh"
 #include "HittableList.hh"
+#include "Transformations.hh"
 #include "AARect.hh"
 
 class Box: public Hittable {
