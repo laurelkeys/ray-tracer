@@ -24,7 +24,7 @@ int main() {
     
     cout << "P3\n" << nx << " " << ny << "\n255\n";
 
-    Hittable* world = Scene::cornell_box();
+    Hittable* world = Scene::cornell_smoke();
 
     // Vec3 look_from(13.0, 2.0, 3.0);
     // Vec3 look_at(0.0, 0.0, 0.0);

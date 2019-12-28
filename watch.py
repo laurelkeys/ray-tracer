@@ -58,9 +58,9 @@ if __name__ == "__main__":
                         plt.imshow(img, interpolation='none')
                         plt.draw()
                         plt.pause(0.001)
-                print(f">>> ({line_count - 3} / {nx * ny}) pixels processed", end='\r')
+                    print(f">>> {100*(line_count - 3)/(nx * ny):.1f}% of pixels processed ({line_count - 3} / {nx * ny})", end='\r')
     output.close()
-    print(f">>> ({nx * ny} / {nx * ny}) pixels processed")
+    print(f">>> 100.0% of pixels processed ({nx * ny} / {nx * ny})")
     
     run(["magick", "convert", f"{img_name}.ppm", f"{img_name}.png"])
     print(f"Δt = {(time() - start_time):.2f}s")
