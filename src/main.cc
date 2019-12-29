@@ -15,16 +15,16 @@ Vec3 visible_color(const Ray& r, Hittable* world, int depth);
 int MAX_DEPTH = 50; // maximum amount of calculated ray reflections
 
 int main() {
-    int nx = 200;
-    int ny = 100;
-    int ns = 100; // number of samples per pixel
-    // int nx = 1200;
-    // int ny = 800;
-    // int ns = 10;
+    // int nx = 200;
+    // int ny = 100;
+    // int ns = 100; // number of samples per pixel
+    int nx = 1200;
+    int ny = 800;
+    int ns = 400;
     
     cout << "P3\n" << nx << " " << ny << "\n255\n";
 
-    Hittable* world = Scene::cornell_smoke();
+    Hittable* world = Scene::final();
 
     // Vec3 look_from(13.0, 2.0, 3.0);
     // Vec3 look_at(0.0, 0.0, 0.0);

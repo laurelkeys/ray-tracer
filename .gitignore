@@ -2,7 +2,6 @@
 *.ppm
 src/*.png
 src/*.jpg
-stb_image.h
 
 # VS Code
 .vscode

@@ -41,21 +41,21 @@ if __name__ == "__main__":
             if line_count == 2:
                 x, y = 0, 0
                 nx, ny = map(int, line.split(' '))
-                img = np.full(shape=(ny, nx, 3), fill_value=255, dtype='uint8')
-                plt.figure(img_name)
-                plt.axis('off')
+                # img = np.full(shape=(ny, nx, 3), fill_value=255, dtype='uint8')
+                # plt.figure(img_name)
+                # plt.axis('off')
                 print(f">>> {nx} x {ny} = {nx * ny} pixels")
             elif line_count >= 4:
-                r, g, b = map(int, line.split(' '))
-                img[y, x, :] = [r, g, b]
+                # r, g, b = map(int, line.split(' '))
+                # img[y, x, :] = [r, g, b]
                 x += 1
                 if x == nx:
                     x = 0
                     y += 1
-                    if y % args.dy == 0:
-                        if plt.fignum_exists(img_name):
-                            plt.imshow(img, interpolation='none', vmin=0, vmax=255)
-                            plt.pause(0.001)
+                    # if y % args.dy == 0:
+                    #     if plt.fignum_exists(img_name):
+                    #         plt.imshow(img, interpolation='none', vmin=0, vmax=255)
+                    #         plt.pause(0.001)
                     print(f">>> {100*(line_count - 3)/(nx * ny):.1f}% of pixels processed ({line_count - 3} / {nx * ny})", end='\r')
     output.close()
     print(f">>> 100.0% of pixels processed ({nx * ny} / {nx * ny})")
