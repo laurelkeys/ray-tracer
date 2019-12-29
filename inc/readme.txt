@@ -1,0 +1,1 @@
+include stb_image.h (from https://github.com/nothings/stb) for uv texture mapping
