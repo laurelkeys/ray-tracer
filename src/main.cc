@@ -17,10 +17,10 @@ int MAX_DEPTH = 50; // maximum amount of calculated ray reflections
 int main() {
     // int nx = 200;
     // int ny = 100;
-    // int ns = 100; // number of samples per pixel
+    // int ns = 10; // number of samples per pixel
     int nx = 1200;
     int ny = 800;
-    int ns = 400;
+    int ns = 200;
     
     cout << "P3\n" << nx << " " << ny << "\n255\n";
 
@@ -28,7 +28,9 @@ int main() {
 
     // Vec3 look_from(13.0, 2.0, 3.0);
     // Vec3 look_at(0.0, 0.0, 0.0);
-    Vec3 look_from(278, 278, -800);
+    // Vec3 look_from(478, 278, -600);
+    // Vec3 look_at(278, 278, 0);
+    Vec3 look_from(300, 400, -500);
     Vec3 look_at(278, 278, 0);
 
     float vfov = 40.0;
