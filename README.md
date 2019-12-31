@@ -15,7 +15,7 @@ Below are some 1200 x 800 images with 10 samples per pixel, which take over a mi
 <img align="left" src="https://raw.githubusercontent.com/laurelkeys/ray-tracer/master/i/large/random_scene_10xAA_fixed_cam_large.png" width="31%"/><img align="left" src="https://raw.githubusercontent.com/laurelkeys/ray-tracer/master/i/large/random_scene_10xAA_y10_large.png" width="31%"/><img align="left" src="https://raw.githubusercontent.com/laurelkeys/ray-tracer/master/i/large/random_scene_10xAA_y18_x18_fixed_dof_large.png" width="31%"/>
 <br><br><br><br><br><br><br><br>
 
-<img align="left" src="https://raw.githubusercontent.com/laurelkeys/ray-tracer/master/i/large/final_large_400spp.png" width="31%"/><img align="left" src="https://raw.githubusercontent.com/laurelkeys/ray-tracer/master/i/large/final_large_200spp.png" width="31%"/><img align="left" src="https://raw.githubusercontent.com/laurelkeys/ray-tracer/master/i/large/final_large_100spp.png" width="31%"/>
+<img align="left" src="https://raw.githubusercontent.com/laurelkeys/ray-tracer/master/i/large/final_large_400spp.png" width="31%"/><img align="left" src="https://raw.githubusercontent.com/laurelkeys/ray-tracer/master/i/large/final_large_220spp.png" width="31%"/><img align="left" src="https://raw.githubusercontent.com/laurelkeys/ray-tracer/master/i/large/final_large_100spp.png" width="31%"/>
 <br><br><br><br><br><br><br>
 
 (more at [i/large/](https://github.com/laurelkeys/ray-tracer/blob/master/i/large/)).

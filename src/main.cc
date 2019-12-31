@@ -20,7 +20,7 @@ int main() {
     // int ns = 10; // number of samples per pixel
     int nx = 1200;
     int ny = 800;
-    int ns = 200;
+    int ns = 220;
     
     cout << "P3\n" << nx << " " << ny << "\n255\n";
 
@@ -28,9 +28,7 @@ int main() {
 
     // Vec3 look_from(13.0, 2.0, 3.0);
     // Vec3 look_at(0.0, 0.0, 0.0);
-    // Vec3 look_from(478, 278, -600);
-    // Vec3 look_at(278, 278, 0);
-    Vec3 look_from(300, 400, -500);
+    Vec3 look_from(378, 278, -700);
     Vec3 look_at(278, 278, 0);
 
     float vfov = 40.0;
