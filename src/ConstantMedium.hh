@@ -3,31 +3,31 @@
 
 #include <float.h>
 
-#include "Ray.hh"
-#include "Random.hh"
-#include "Texture.hh"
 #include "Hittable.hh"
 #include "Material.hh"
+#include "Random.hh"
+#include "Ray.hh"
+#include "Texture.hh"
 
 class ConstantMedium : public Hittable {
-    public:
-        Hittable *boundary;
-        Material *phase_function;
-        float density; // C
-        // note: the probability that a ray scatters in a small distance δL
-        //       when passing through a constant volume is equal to (C ⋅ δL)
+  public:
+    Hittable* boundary;
+    Material* phase_function;
+    float density; // C
+    // note: the probability that a ray scatters in a small distance δL
+    //       when passing through a constant volume is equal to (C ⋅ δL)
 
-        ConstantMedium(Hittable *b, float d, Texture *a) :
-            boundary(b),
-            density(d) {
-            phase_function = new Isotropic(a);
-        }
-        
-        virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
-        
-        virtual bool bounding_box(float t0, float t1, AABB& box) const {
-            return boundary->bounding_box(t0, t1, box);
-        }
+    ConstantMedium(Hittable* b, float d, Texture* a) :
+        boundary(b),
+        density(d) {
+        phase_function = new Isotropic(a);
+    }
+
+    virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
+
+    virtual bool bounding_box(float t0, float t1, AABB& box) const {
+        return boundary->bounding_box(t0, t1, box);
+    }
 };
 
 bool ConstantMedium::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const {
@@ -47,7 +47,7 @@ bool ConstantMedium::hit(const Ray& r, float t_min, float t_max, HitRecord& rec)
                 rec1.t = 0;
 
             float distance_inside_boundary = (rec2.t - rec1.t) * r.direction().length();
-            float hit_distance = -(1/density) * log(Random::number_ge_0_lt_1());
+            float hit_distance = -(1 / density) * log(Random::number_ge_0_lt_1());
 
             if (hit_distance < distance_inside_boundary) {
                 rec.t = rec1.t + hit_distance / r.direction().length();

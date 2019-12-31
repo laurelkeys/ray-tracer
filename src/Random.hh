@@ -1,8 +1,8 @@
 #ifndef RANDOMHH
 #define RANDOMHH
 
-#include <random>
 #include "Vec3.hh"
+#include <random>
 
 namespace Random {
     namespace {
@@ -13,7 +13,7 @@ namespace Random {
 
         std::random_device rd;
         std::mt19937 gen(rd());
-        
+
         // uniform distribution \in [0.0, 1.0)
         std::uniform_real_distribution<float> rand_dist(0.0, 1.0);
     }

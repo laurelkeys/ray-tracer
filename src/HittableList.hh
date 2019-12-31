@@ -1,22 +1,22 @@
 #ifndef HITTABLELISTHH
 #define HITTABLELISTHH
 
-#include "Ray.hh"
 #include "AABB.hh"
 #include "Hittable.hh"
+#include "Ray.hh"
 
 class HittableList : public Hittable {
-    public:
-        int list_size;
-        Hittable** list;
+  public:
+    int list_size;
+    Hittable** list;
 
-        HittableList() { }
-        HittableList(Hittable** list, int n) : 
-            list(list), 
-            list_size(n) { }
+    HittableList() {}
+    HittableList(Hittable** list, int n) :
+        list(list),
+        list_size(n) {}
 
-        virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
-        virtual bool bounding_box(float t0, float t1, AABB& box) const;
+    virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
+    virtual bool bounding_box(float t0, float t1, AABB& box) const;
 };
 
 bool HittableList::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const {
@@ -36,7 +36,7 @@ bool HittableList::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) c
 bool HittableList::bounding_box(float t0, float t1, AABB& box) const {
     if (list_size < 1)
         return false; // doesn't have a bounding box
-    
+
     AABB temp_box;
     bool first_true = list[0]->bounding_box(t0, t1, temp_box);
     if (!first_true) {
@@ -52,7 +52,7 @@ bool HittableList::bounding_box(float t0, float t1, AABB& box) const {
             return false;
         }
     }
-    
+
     return true; // has a well-defined bounding box
 }
 
