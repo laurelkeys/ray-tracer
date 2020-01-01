@@ -1,7 +1,9 @@
+#pragma once
 #ifndef TRANSFORMATIONSHH
 #define TRANSFORMATIONSHH
 
 #include <float.h>
+#include <math.h>
 
 #include "AABB.hh"
 #include "Hittable.hh"
@@ -9,36 +11,36 @@
 #include "Vec3.hh"
 
 class FlipNormals : public Hittable {
-  public:
-    Hittable* ptr;
+    public:
+        Hittable* ptr;
 
-    FlipNormals(Hittable* p) :
-        ptr(p) {}
+        FlipNormals(Hittable* p) :
+            ptr(p) {}
 
-    virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const {
-        if (ptr->hit(r, t_min, t_max, rec)) {
-            rec.surface_normal = -rec.surface_normal;
-            return true;
+        virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const {
+            if (ptr->hit(r, t_min, t_max, rec)) {
+                rec.surface_normal = -rec.surface_normal;
+                return true;
+            }
+            return false;
         }
-        return false;
-    }
 
-    virtual bool bounding_box(float t0, float t1, AABB& box) const {
-        return ptr->bounding_box(t0, t1, box);
-    }
+        virtual bool bounding_box(float t0, float t1, AABB& box) const {
+            return ptr->bounding_box(t0, t1, box);
+        }
 };
 
 class Translate : public Hittable {
-  public:
-    Hittable* ptr;
-    Vec3 offset;
+    public:
+        Hittable* ptr;
+        Vec3 offset;
 
-    Translate(Hittable* p, const Vec3& displacement) :
-        ptr(p),
-        offset(displacement) {}
+        Translate(Hittable* p, const Vec3& displacement) :
+            ptr(p),
+            offset(displacement) {}
 
-    virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
-    virtual bool bounding_box(float t0, float t1, AABB& box) const;
+        virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
+        virtual bool bounding_box(float t0, float t1, AABB& box) const;
 };
 
 bool Translate::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const {
@@ -59,21 +61,21 @@ bool Translate::bounding_box(float t0, float t1, AABB& box) const {
 }
 
 class RotateY : public Hittable {
-  public:
-    Hittable* ptr;
-    AABB bbox;
-    float sin_theta;
-    float cos_theta;
-    bool has_bbox;
+    public:
+        Hittable* ptr;
+        AABB bbox;
+        float sin_theta;
+        float cos_theta;
+        bool has_bbox;
 
-    RotateY(Hittable* p, float angle);
+        RotateY(Hittable* p, float angle);
 
-    virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
+        virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
 
-    virtual bool bounding_box(float t0, float t1, AABB& box) const {
-        box = bbox;
-        return has_bbox;
-    }
+        virtual bool bounding_box(float t0, float t1, AABB& box) const {
+            box = bbox;
+            return has_bbox;
+        }
 };
 
 RotateY::RotateY(Hittable* p, float angle_in_degrees) :

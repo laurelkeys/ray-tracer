@@ -1,3 +1,4 @@
+#pragma once
 #ifndef BoxHH
 #define BoxHH
 
@@ -11,19 +12,19 @@
 #include "Vec3.hh"
 
 class Box : public Hittable {
-  public:
-    Vec3 pmin, pmax;
-    Hittable* list_ptr;
+    public:
+        Vec3 pmin, pmax;
+        Hittable* list_ptr;
 
-    Box() {}
-    Box(const Vec3& p0, const Vec3& p1, Material* ptr);
+        Box() {}
+        Box(const Vec3& p0, const Vec3& p1, Material* ptr);
 
-    virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
+        virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
 
-    virtual bool bounding_box(float t0, float t1, AABB& box) const {
-        box = AABB(pmin, pmax);
-        return true;
-    }
+        virtual bool bounding_box(float t0, float t1, AABB& box) const {
+            box = AABB(pmin, pmax);
+            return true;
+        }
 };
 
 Box::Box(const Vec3& p0, const Vec3& p1, Material* ptr) {

@@ -1,3 +1,4 @@
+#pragma once
 #ifndef MOVINGSPHEREHH
 #define MOVINGSPHEREHH
 
@@ -8,26 +9,26 @@
 #include "Vec3.hh"
 
 class MovingSphere : public Hittable {
-  public:
-    Vec3 center0, center1;
-    float time0, time1;
-    float radius;
-    Material* material_ptr;
+    public:
+        Vec3 center0, center1;
+        float time0, time1;
+        float radius;
+        Material* material_ptr;
 
-    MovingSphere() {}
-    MovingSphere(Vec3 cen0, Vec3 cen1, float t0, float t1,
-                 float radius, Material* material_ptr) :
-        center0(cen0),
-        center1(cen1),
-        time0(t0),
-        time1(t1),
-        radius(radius),
-        material_ptr(material_ptr) {}
+        MovingSphere() {}
+        MovingSphere(Vec3 cen0, Vec3 cen1, float t0, float t1,
+                    float radius, Material* material_ptr) :
+            center0(cen0),
+            center1(cen1),
+            time0(t0),
+            time1(t1),
+            radius(radius),
+            material_ptr(material_ptr) {}
 
-    virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
-    virtual bool bounding_box(float t0, float t1, AABB& box) const;
+        virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
+        virtual bool bounding_box(float t0, float t1, AABB& box) const;
 
-    Vec3 center(float time) const;
+        Vec3 center(float time) const;
 };
 
 bool MovingSphere::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const {

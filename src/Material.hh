@@ -1,3 +1,4 @@
+#pragma once
 #ifndef MATERIALHH
 #define MATERIALHH
 
@@ -96,49 +97,49 @@ class Metal : public Material {
 // obs.: a dielectric sphere with negative radius will make the surface normal
 //       point inward, so it can be used as a bubble to make a hollow glass sphere
 class Dielectric : public Material {
-  public:
-    float refractive_index;
+    public:
+        float refractive_index;
 
-    Dielectric(float refractive_index) :
-        refractive_index(refractive_index) {}
+        Dielectric(float refractive_index) :
+            refractive_index(refractive_index) {}
 
-    virtual bool scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& r_scattered) const {
-        Vec3 outward_normal;
-        Vec3 reflected = reflect(r_in.direction(), rec.surface_normal);
+        virtual bool scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& r_scattered) const {
+            Vec3 outward_normal;
+            Vec3 reflected = reflect(r_in.direction(), rec.surface_normal);
 
-        // attenuation is always 1.0, so the surface absorbs nothing
-        // note: attenuation.z() == 0.0 so it kills the blue channel from the background
-        attenuation = Vec3(1.0, 1.0, 1.0);
+            // attenuation is always 1.0, so the surface absorbs nothing
+            // note: attenuation.z() == 0.0 so it kills the blue channel from the background
+            attenuation = Vec3(1.0, 1.0, 1.0);
 
-        float ni_over_nt;
-        float cosine;
-        if (dot(r_in.direction(), rec.surface_normal) > 0.0) {
-            outward_normal = -rec.surface_normal;
-            ni_over_nt = refractive_index;
-            cosine = refractive_index * dot(r_in.direction(), rec.surface_normal) / r_in.direction().length();
-        } else {
-            outward_normal = rec.surface_normal;
-            ni_over_nt = 1.0 / refractive_index;
-            cosine = -dot(r_in.direction(), rec.surface_normal) / r_in.direction().length();
-        }
+            float ni_over_nt;
+            float cosine;
+            if (dot(r_in.direction(), rec.surface_normal) > 0.0) {
+                outward_normal = -rec.surface_normal;
+                ni_over_nt = refractive_index;
+                cosine = refractive_index * dot(r_in.direction(), rec.surface_normal) / r_in.direction().length();
+            } else {
+                outward_normal = rec.surface_normal;
+                ni_over_nt = 1.0 / refractive_index;
+                cosine = -dot(r_in.direction(), rec.surface_normal) / r_in.direction().length();
+            }
 
-        Vec3 refracted;
-        float reflect_prob;
-        if (refract(r_in.direction(), outward_normal, ni_over_nt, refracted)) {
-            reflect_prob = schlicks_approximation(cosine, refractive_index);
-        } else {
-            reflect_prob = 1.0;
-            r_scattered = Ray(rec.p, reflected);
+            Vec3 refracted;
+            float reflect_prob;
+            if (refract(r_in.direction(), outward_normal, ni_over_nt, refracted)) {
+                reflect_prob = schlicks_approximation(cosine, refractive_index);
+            } else {
+                reflect_prob = 1.0;
+                r_scattered = Ray(rec.p, reflected);
+                return true;
+            }
+
+            if (Random::number_ge_0_lt_1() < reflect_prob) {
+                r_scattered = Ray(rec.p, reflected);
+            } else {
+                r_scattered = Ray(rec.p, refracted);
+            }
             return true;
         }
-
-        if (Random::number_ge_0_lt_1() < reflect_prob) {
-            r_scattered = Ray(rec.p, reflected);
-        } else {
-            r_scattered = Ray(rec.p, refracted);
-        }
-        return true;
-    }
 };
 
 // ref.: https://en.wikipedia.org/wiki/Schlick%27s_approximation, https://www.dorian-iten.com/fresnel/

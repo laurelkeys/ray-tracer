@@ -1,3 +1,4 @@
+#pragma once
 #ifndef CONSTANTMEDIUMHH
 #define CONSTANTMEDIUMHH
 
@@ -10,24 +11,24 @@
 #include "Texture.hh"
 
 class ConstantMedium : public Hittable {
-  public:
-    Hittable* boundary;
-    Material* phase_function;
-    float density; // C
-    // note: the probability that a ray scatters in a small distance δL
-    //       when passing through a constant volume is equal to (C ⋅ δL)
+    public:
+        Hittable* boundary;
+        Material* phase_function;
+        float density; // C
+        // note: the probability that a ray scatters in a small distance δL
+        //       when passing through a constant volume is equal to (C ⋅ δL)
 
-    ConstantMedium(Hittable* b, float d, Texture* a) :
-        boundary(b),
-        density(d) {
-        phase_function = new Isotropic(a);
-    }
+        ConstantMedium(Hittable* b, float d, Texture* a) :
+            boundary(b),
+            density(d) {
+            phase_function = new Isotropic(a);
+        }
 
-    virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
+        virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
 
-    virtual bool bounding_box(float t0, float t1, AABB& box) const {
-        return boundary->bounding_box(t0, t1, box);
-    }
+        virtual bool bounding_box(float t0, float t1, AABB& box) const {
+            return boundary->bounding_box(t0, t1, box);
+        }
 };
 
 bool ConstantMedium::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const {

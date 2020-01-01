@@ -1,3 +1,4 @@
+#pragma once
 #ifndef SCENEHH
 #define SCENEHH
 
@@ -19,26 +20,26 @@
 #include "Vec3.hh"
 
 namespace Scene {
-    Hittable * final();
-    Hittable *cornell_balls();
-    Hittable *cornell_smoke();
-    Hittable *cornell_box();
-    Hittable *simple_light();
-    Hittable *earth();
-    Hittable *three_spheres();
-    Hittable *two_perlin_spheres();
-    Hittable *two_spheres();
-    Hittable *random_scene();
-    Hittable *wikipedia_scene();
+    Hittable* final();
+    Hittable* cornell_balls();
+    Hittable* cornell_smoke();
+    Hittable* cornell_box();
+    Hittable* simple_light();
+    Hittable* earth();
+    Hittable* three_spheres();
+    Hittable* two_perlin_spheres();
+    Hittable* two_spheres();
+    Hittable* random_scene();
+    Hittable* wikipedia_scene();
 }
 
-Hittable *Scene::final() {
+Hittable* Scene::final() {
     int nb = 20;
-    Hittable **list = new Hittable *[30];
-    Hittable **boxlist = new Hittable *[10000];
-    Hittable **boxlist2 = new Hittable *[10000];
-    Material *white = new Lambertian(new ConstantTexture(Vec3(0.73, 0.73, 0.73)));
-    Material *ground = new Lambertian(new ConstantTexture(Vec3(0.48, 0.83, 0.53)));
+    Hittable** list = new Hittable*[30];
+    Hittable** boxlist = new Hittable*[10000];
+    Hittable** boxlist2 = new Hittable*[10000];
+    Material* white = new Lambertian(new ConstantTexture(Vec3(0.73, 0.73, 0.73)));
+    Material* ground = new Lambertian(new ConstantTexture(Vec3(0.48, 0.83, 0.53)));
     int b = 0;
     for (int i = 0; i < nb; ++i) {
         for (int j = 0; j < nb; ++j) {
@@ -56,7 +57,7 @@ Hittable *Scene::final() {
     int l = 0;
     list[l++] = new BVHNode(boxlist, b, 0, 1);
 
-    Material *light = new DiffuseLight(new ConstantTexture(Vec3(7, 7, 7)));
+    Material* light = new DiffuseLight(new ConstantTexture(Vec3(7, 7, 7)));
     list[l++] = new XZRect(123, 423, 147, 412, 554, light);
 
     Vec3 center(400, 400, 200);
@@ -65,7 +66,7 @@ Hittable *Scene::final() {
     list[l++] = new Sphere(Vec3(260, 150, 45), 50, new Dielectric(1.5));
     list[l++] = new Sphere(Vec3(0, 150, 145), 50, new Metal(Vec3(0.8, 0.8, 0.9), 10.0));
 
-    Hittable *boundary = new Sphere(Vec3(360, 150, 145), 70, new Dielectric(1.5));
+    Hittable* boundary = new Sphere(Vec3(360, 150, 145), 70, new Dielectric(1.5));
     list[l++] = boundary;
     list[l++] = new ConstantMedium(boundary, 0.2, new ConstantTexture(Vec3(0.2, 0.4, 0.9)));
 
@@ -73,11 +74,11 @@ Hittable *Scene::final() {
     list[l++] = new ConstantMedium(boundary, 0.0001, new ConstantTexture(Vec3(1.0, 1.0, 1.0)));
 
     int nx, ny, nn;
-    unsigned char *texture_pixels = stbi_load("earthmap.jpg", &nx, &ny, &nn, 0);
-    Material *emat = new Lambertian(new ImageTexture(texture_pixels, nx, ny));
+    unsigned char* texture_pixels = stbi_load("earthmap.jpg", &nx, &ny, &nn, 0);
+    Material* emat = new Lambertian(new ImageTexture(texture_pixels, nx, ny));
     list[l++] = new Sphere(Vec3(400, 200, 400), 100, emat);
 
-    Texture *pertext = new NoiseTexture(0.1);
+    Texture* pertext = new NoiseTexture(0.1);
     list[l++] = new Sphere(Vec3(220, 280, 300), 80, new Lambertian(pertext));
 
     int ns = 1000;
@@ -94,13 +95,13 @@ Hittable *Scene::final() {
     return new HittableList(list, l);
 }
 
-Hittable *Scene::cornell_balls() {
-    Hittable **list = new Hittable *[9];
+Hittable* Scene::cornell_balls() {
+    Hittable** list = new Hittable*[9];
 
-    Material *red = new Lambertian(new ConstantTexture(Vec3(0.65, 0.05, 0.05)));
-    Material *white = new Lambertian(new ConstantTexture(Vec3(0.73, 0.73, 0.73)));
-    Material *green = new Lambertian(new ConstantTexture(Vec3(0.12, 0.45, 0.15)));
-    Material *light = new DiffuseLight(new ConstantTexture(Vec3(7, 7, 7)));
+    Material* red = new Lambertian(new ConstantTexture(Vec3(0.65, 0.05, 0.05)));
+    Material* white = new Lambertian(new ConstantTexture(Vec3(0.73, 0.73, 0.73)));
+    Material* green = new Lambertian(new ConstantTexture(Vec3(0.12, 0.45, 0.15)));
+    Material* light = new DiffuseLight(new ConstantTexture(Vec3(7, 7, 7)));
 
     int i = 0;
     list[i++] = new FlipNormals(new YZRect(0, 555, 0, 555, 555, green));
@@ -111,20 +112,20 @@ Hittable *Scene::cornell_balls() {
     list[i++] = new FlipNormals(new XYRect(0, 555, 0, 555, 555, white));
 
     // note: a volume inside a dielectric is a subsurface material
-    Hittable *boundary = new Sphere(Vec3(160, 100, 145), 100, new Dielectric(1.5));
+    Hittable* boundary = new Sphere(Vec3(160, 100, 145), 100, new Dielectric(1.5));
     list[i++] = boundary;
     list[i++] = new ConstantMedium(boundary, 0.1, new ConstantTexture(Vec3(1, 1, 1)));
     list[i++] = new Translate(new RotateY(new Box(Vec3(0, 0, 0), Vec3(165, 330, 165), white), 15), Vec3(265, 0, 295));
     return new HittableList(list, i);
 }
 
-Hittable *Scene::cornell_smoke() {
-    Hittable **list = new Hittable *[8];
+Hittable* Scene::cornell_smoke() {
+    Hittable** list = new Hittable*[8];
 
-    Material *red = new Lambertian(new ConstantTexture(Vec3(0.65, 0.05, 0.05)));
-    Material *white = new Lambertian(new ConstantTexture(Vec3(0.73, 0.73, 0.73)));
-    Material *green = new Lambertian(new ConstantTexture(Vec3(0.12, 0.45, 0.15)));
-    Material *light = new DiffuseLight(new ConstantTexture(Vec3(7, 7, 7)));
+    Material* red = new Lambertian(new ConstantTexture(Vec3(0.65, 0.05, 0.05)));
+    Material* white = new Lambertian(new ConstantTexture(Vec3(0.73, 0.73, 0.73)));
+    Material* green = new Lambertian(new ConstantTexture(Vec3(0.12, 0.45, 0.15)));
+    Material* light = new DiffuseLight(new ConstantTexture(Vec3(7, 7, 7)));
 
     int i = 0;
     list[i++] = new FlipNormals(new YZRect(0, 555, 0, 555, 555, green));
@@ -134,10 +135,10 @@ Hittable *Scene::cornell_smoke() {
     list[i++] = new XZRect(0, 555, 0, 555, 0, white);
     list[i++] = new FlipNormals(new XYRect(0, 555, 0, 555, 555, white));
 
-    Hittable *b1 = new Translate(
+    Hittable* b1 = new Translate(
         new RotateY(new Box(Vec3(0, 0, 0), Vec3(165, 165, 165), white), -18),
         Vec3(130, 0, 65));
-    Hittable *b2 = new Translate(
+    Hittable* b2 = new Translate(
         new RotateY(new Box(Vec3(0, 0, 0), Vec3(165, 330, 165), white), 15),
         Vec3(265, 0, 295));
 
@@ -147,13 +148,13 @@ Hittable *Scene::cornell_smoke() {
     return new HittableList(list, i);
 }
 
-Hittable *Scene::cornell_box() {
-    Hittable **list = new Hittable *[8];
+Hittable* Scene::cornell_box() {
+    Hittable** list = new Hittable*[8];
 
-    Material *red = new Lambertian(new ConstantTexture(Vec3(0.65, 0.05, 0.05)));
-    Material *white = new Lambertian(new ConstantTexture(Vec3(0.73, 0.73, 0.73)));
-    Material *green = new Lambertian(new ConstantTexture(Vec3(0.12, 0.45, 0.15)));
-    Material *light = new DiffuseLight(new ConstantTexture(Vec3(15, 15, 15)));
+    Material* red = new Lambertian(new ConstantTexture(Vec3(0.65, 0.05, 0.05)));
+    Material* white = new Lambertian(new ConstantTexture(Vec3(0.73, 0.73, 0.73)));
+    Material* green = new Lambertian(new ConstantTexture(Vec3(0.12, 0.45, 0.15)));
+    Material* light = new DiffuseLight(new ConstantTexture(Vec3(15, 15, 15)));
 
     int i = 0;
     list[i++] = new FlipNormals(new YZRect(0, 555, 0, 555, 555, green));
@@ -175,9 +176,9 @@ Hittable *Scene::cornell_box() {
     return new HittableList(list, i);
 }
 
-Hittable *Scene::simple_light() {
-    Texture *perlin_texture = new NoiseTexture(4);
-    Hittable **list = new Hittable *[4];
+Hittable* Scene::simple_light() {
+    Texture* perlin_texture = new NoiseTexture(4);
+    Hittable** list = new Hittable*[4];
     list[0] = new Sphere(Vec3(0, -1000, 0), 1000, new Lambertian(perlin_texture));
     list[1] = new Sphere(Vec3(0, 2, 0), 2, new Lambertian(perlin_texture));
     list[2] = new Sphere(Vec3(0, 7, 0), 2,
@@ -187,16 +188,16 @@ Hittable *Scene::simple_light() {
     return new HittableList(list, 4);
 }
 
-Hittable *Scene::earth() {
+Hittable* Scene::earth() {
     int nx, ny, nn;
-    unsigned char *texture_pixels = stbi_load("earthmap.jpg", &nx, &ny, &nn, 0);
-    Material *material_ptr = new Lambertian(new ImageTexture(texture_pixels, nx, ny));
+    unsigned char* texture_pixels = stbi_load("earthmap.jpg", &nx, &ny, &nn, 0);
+    Material* material_ptr = new Lambertian(new ImageTexture(texture_pixels, nx, ny));
     return new Sphere(Vec3(0, 0, 0), 2, material_ptr);
 }
 
-Hittable *Scene::three_spheres() {
+Hittable* Scene::three_spheres() {
     int n = 5;
-    Hittable **objects = new Hittable *[n];
+    Hittable** objects = new Hittable*[n];
     objects[0] = new Sphere(Vec3(0.0, 0.0, -1.0), 0.5, new Lambertian(new ConstantTexture(Vec3(0.8, 0.3, 0.3))));
     objects[1] = new Sphere(Vec3(0.0, -100.5, -1.0), 100.0, new Lambertian(new ConstantTexture(Vec3(0.8, 0.8, 0.0))));
     objects[2] = new Sphere(Vec3(1.0, 0.0, -1.0), 0.5, new Metal(Vec3(0.8, 0.6, 0.2)));
@@ -206,28 +207,28 @@ Hittable *Scene::three_spheres() {
     return new HittableList(objects, n);
 }
 
-Hittable *Scene::two_perlin_spheres() {
-    Texture *perlin_texture = new NoiseTexture(3.5);
-    Hittable **list = new Hittable *[2];
+Hittable* Scene::two_perlin_spheres() {
+    Texture* perlin_texture = new NoiseTexture(3.5);
+    Hittable** list = new Hittable*[2];
     list[0] = new Sphere(Vec3(0, -1000, 0), 1000, new Lambertian(perlin_texture));
     list[1] = new Sphere(Vec3(0, 2, 0), 2, new Lambertian(perlin_texture));
     return new HittableList(list, 2);
 }
 
-Hittable *Scene::two_spheres() {
-    Texture *checker = new CheckerTexture(new ConstantTexture(Vec3(0.2, 0.3, 0.1)),
+Hittable* Scene::two_spheres() {
+    Texture* checker = new CheckerTexture(new ConstantTexture(Vec3(0.2, 0.3, 0.1)),
                                           new ConstantTexture(Vec3(0.9, 0.9, 0.9)));
-    Hittable **list = new Hittable *[2];
+    Hittable** list = new Hittable*[2];
     list[0] = new Sphere(Vec3(0, -10, 0), 10, new Lambertian(checker));
     list[1] = new Sphere(Vec3(0, 10, 0), 10, new Lambertian(checker));
     return new HittableList(list, 2);
 }
 
-Hittable *Scene::random_scene() {
+Hittable* Scene::random_scene() {
     int n = 500;
-    Hittable **objects = new Hittable *[n + 1];
+    Hittable** objects = new Hittable*[n + 1];
 
-    Texture *checker = new CheckerTexture(new ConstantTexture(Vec3(0.2, 0.3, 0.1)),
+    Texture* checker = new CheckerTexture(new ConstantTexture(Vec3(0.2, 0.3, 0.1)),
                                           new ConstantTexture(Vec3(0.9, 0.9, 0.9)));
     objects[0] = new Sphere(Vec3(0.0, -1000.0, 0.0), 1000.0, new Lambertian(checker));
 
@@ -240,7 +241,7 @@ Hittable *Scene::random_scene() {
                         b + 0.9 * Random::number_ge_0_lt_1());
 
             if ((center - Vec3(4.0, 0.2, 0.0)).length() > 0.9) {
-                Material *material_ptr;
+                Material* material_ptr;
 
                 if (choose_mat < 0.8) {
                     material_ptr = new Lambertian(new ConstantTexture(
@@ -280,7 +281,7 @@ Hittable *Scene::random_scene() {
     return new BVHNode(objects, i, 0.0, 1.0);
 }
 
-Hittable *Scene::wikipedia_scene() {
+Hittable* Scene::wikipedia_scene() {
     // attempt to build the scene of the first image on Wikipedia's "Ray tracing (graphics)" page
     // ref.: https://en.wikipedia.org/wiki/File:Recursive_raytrace_of_a_sphere.png
 
@@ -294,7 +295,7 @@ Hittable *Scene::wikipedia_scene() {
     Vec3 beige(1.0, 0.87, 0.82);
 
     int number_of_objects = 9;
-    Hittable **objects = new Hittable *[number_of_objects];
+    Hittable** objects = new Hittable*[number_of_objects];
 
     float r = 1.0;
     // objects[0] = new Sphere(Vec3(0.0, -1000.0 - r, 0.0), 1000.0, new Lambertian(new ConstantTexture(white)));

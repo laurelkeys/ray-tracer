@@ -1,3 +1,4 @@
+#pragma once
 #ifndef RANDOMHH
 #define RANDOMHH
 
