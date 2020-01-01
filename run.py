@@ -9,8 +9,8 @@ def get_parser():
     parser.add_argument("--keep_ppm", "-ppm", action="store_true", help="Keep the original PPM output image")
     parser.add_argument("--debug", "-g", action="store_true", help="Use -g on g++ call")
     parser.add_argument("--warnings", "-Wall", action="store_true", help="Use -Wall on g++ call")
-    parser.add_argument("--min_size", "-o", action="store_true", help="Use -o on g++ call (minimize size)")
-    parser.add_argument("--max_speed", "-o2", action="store_true", help="Use -o2 on g++ call (maximize speed)")
+    parser.add_argument("--min_size", "-O", action="store_true", help="Use -O on g++ call (minimize size)")
+    parser.add_argument("--max_speed", "-O2", action="store_true", help="Use -O2 on g++ call (maximize speed)")
     return parser
 
 def build_cmd(args):
@@ -20,11 +20,11 @@ def build_cmd(args):
     if args.warnings:
         cmd.append("-Wall")
     if args.max_speed:
-        cmd.append("-o2")
+        cmd.append("-O2")
         if args.min_size:
-            print("\nWarning: -o is ignored if -o2 is used as well\n")
+            print("\nWarning: -O is ignored if -O2 is used as well\n")
     elif args.min_size:
-        cmd.append("-o") # same as -o1
+        cmd.append("-O") # same as -O1
     return cmd
 
 if __name__ == "__main__":

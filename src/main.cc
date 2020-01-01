@@ -20,7 +20,7 @@ int main() {
     // int ns = 10; // number of samples per pixel
     int nx = 1200;
     int ny = 800;
-    int ns = 20;
+    int ns = 100;
 
     cout << "P3\n" << nx << " " << ny << "\n255\n";
 
