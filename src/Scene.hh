@@ -1,4 +1,3 @@
-#pragma once
 #ifndef SCENEHH
 #define SCENEHH
 
@@ -31,6 +30,7 @@ namespace Scene {
     Hittable* two_spheres();
     Hittable* random_scene();
     Hittable* wikipedia_scene();
+    Hittable* wikipedia_scene_sss();
 }
 
 Hittable* Scene::final() {
@@ -313,6 +313,59 @@ Hittable* Scene::wikipedia_scene() {
     objects[7] = new Sphere(Vec3(-1.8 * r, -0.5 * r, -1.4 * r), 0.5 * r, new Lambertian(new ConstantTexture(yellow2)));
     objects[8] = new Sphere(Vec3(1.5 * r, -0.1 * r, -1.7 * r), 0.9 * r, new Metal(white));
     // objects[8] = new Sphere(Vec3(1.5*r, -0.1*r, -1.7*r), 0.9*r, new Dielectric(1.3));
+
+    return new HittableList(objects, number_of_objects);
+}
+
+Hittable* Scene::wikipedia_scene_sss() {
+    // note: using a volume inside of a dielectric for subsurface reflection
+    //       (sss - subsurface scattering)
+    Vec3 white(0.9, 0.9, 0.9);
+    Vec3 salmon(0.99, 0.71, 0.65);
+    Vec3 yellow(1.0, 0.99, 0.74);
+    Vec3 yellow2(0.99, 0.89, 0.6);
+    Vec3 pink(1.0, 0.72, 0.92);
+    Vec3 pink2(0.94, 0.5, 0.55);
+    Vec3 pink3(1.0, 0.59, 0.74);
+    Vec3 beige(1.0, 0.87, 0.82);
+
+    int number_of_objects = 16;
+    Hittable** objects = new Hittable*[number_of_objects];
+
+    int n = 0;
+    float r = 1.0;
+    float optical_density = 0.8;
+    float refractive_index = 1.5;
+    Hittable* boundary;
+    
+    // objects[n++] = new Sphere(Vec3(0.0, -1000.0 - r, 0.0), 1000.0, new Lambertian(new ConstantTexture(white)));
+    // objects[n++] = new Sphere(Vec3(0.0, -1000.0 - r, 0.0), 1000.0, new Metal(white));
+    objects[n++] = new Sphere(Vec3(0.0, -1000.0 - r, 0.0), 1000.0, new Dielectric(1.3));
+
+    boundary = new Sphere(Vec3(0.0, 0.0, 0.0), r, new Dielectric(refractive_index));
+    objects[n++] = boundary;
+    objects[n++] = new ConstantMedium(boundary, optical_density+0.5, new ConstantTexture(salmon));
+    boundary = new Sphere(Vec3(0.3 - r, -0.7 * r, 1.8 * r), 0.3 * r, new Dielectric(refractive_index));
+    objects[n++] = boundary;
+    objects[n++] = new ConstantMedium(boundary, optical_density, new ConstantTexture(yellow));
+    boundary = new Sphere(Vec3(1.7 * r, -0.4 * r, r), 0.6 * r, new Dielectric(refractive_index));
+    objects[n++] = boundary;
+    objects[n++] = new ConstantMedium(boundary, optical_density, new ConstantTexture(beige));
+    boundary = new Sphere(Vec3(-1.8 * r, -0.3 * r, r), 0.7 * r, new Dielectric(refractive_index));
+    objects[n++] = boundary;
+    objects[n++] = new ConstantMedium(boundary, optical_density, new ConstantTexture(pink2));
+    boundary = new Sphere(Vec3(3.1 * r, 0.6 * r, -r), 1.6 * r, new Dielectric(refractive_index));
+    objects[n++] = boundary;
+    objects[n++] = new ConstantMedium(boundary, optical_density, new ConstantTexture(pink));
+    boundary = new Sphere(Vec3(-3.8 * r, 0.6 * r, -r), 1.6 * r, new Dielectric(refractive_index));
+    objects[n++] = boundary;
+    objects[n++] = new ConstantMedium(boundary, optical_density, new ConstantTexture(pink3));
+    boundary = new Sphere(Vec3(-1.8 * r, -0.5 * r, -1.4 * r), 0.5 * r, new Dielectric(refractive_index));
+    objects[n++] = boundary;
+    objects[n++] = new ConstantMedium(boundary, optical_density, new ConstantTexture(yellow2));
+    
+    objects[n++] = new Sphere(Vec3(1.5 * r, -0.1 * r, -1.7 * r), 0.9 * r, new Metal(white));
+    // objects[n++] = new Sphere(Vec3(1.5*r, -0.1*r, -1.7*r), 0.9*r, new Dielectric(1.3));
 
     return new HittableList(objects, number_of_objects);
 }

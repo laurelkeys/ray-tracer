@@ -1,7 +1,6 @@
 #ifndef HITTABLEHH
 #define HITTABLEHH
 
-#pragma once
 #include "AABB.hh"
 #include "Ray.hh"
 #include "Vec3.hh"

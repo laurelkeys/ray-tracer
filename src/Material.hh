@@ -1,4 +1,3 @@
-#pragma once
 #ifndef MATERIALHH
 #define MATERIALHH
 
@@ -13,84 +12,84 @@ bool refract(const Vec3& v, const Vec3& surface_normal, float ni_over_nt, Vec3& 
 float schlicks_approximation(float cos_theta, float refractive_index);
 
 class Material {
-  public:
-    virtual bool scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& r_scattered) const = 0;
-    // note: the pure virtual function makes Material an abstract class, so it can't be instantiated,
-    //       and a derived class that implements scatter() must be used (i.e. "= 0" makes overriding required)
+    public:
+        virtual bool scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& r_scattered) const = 0;
+        // note: the pure virtual function makes Material an abstract class, so it can't be instantiated,
+        //       and a derived class that implements scatter() must be used (i.e. "= 0" makes overriding required)
 
-    virtual Vec3 emitted(float u, float v, const Vec3& p) const {
-        return Vec3(0, 0, 0); // BLACK
-    }
+        virtual Vec3 emitted(float u, float v, const Vec3& p) const {
+            return Vec3(0, 0, 0); // BLACK
+        }
 };
 
 class Isotropic : public Material {
-  public:
-    Texture* albedo;
+    public:
+        Texture* albedo;
 
-    Isotropic(Texture* a) :
-        albedo(a) { }
+        Isotropic(Texture* a) :
+            albedo(a) { }
 
-    virtual bool scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& scattered) const {
-        scattered = Ray(rec.p, Random::point_in_unit_sphere());
-        attenuation = albedo->value(rec.u, rec.v, rec.p);
-        return true;
-    }
+        virtual bool scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& scattered) const {
+            scattered = Ray(rec.p, Random::point_in_unit_sphere());
+            attenuation = albedo->value(rec.u, rec.v, rec.p);
+            return true;
+        }
 };
 
 class DiffuseLight : public Material {
-  public:
-    Texture* emit;
+    public:
+        Texture* emit;
 
-    DiffuseLight(Texture* a) :
-        emit(a) { }
+        DiffuseLight(Texture* a) :
+            emit(a) { }
 
-    virtual bool scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& scattered) const {
-        return false;
-    }
+        virtual bool scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& scattered) const {
+            return false;
+        }
 
-    virtual Vec3 emitted(float u, float v, const Vec3& p) const {
-        return emit->value(u, v, p);
-    }
+        virtual Vec3 emitted(float u, float v, const Vec3& p) const {
+            return emit->value(u, v, p);
+        }
 };
 
 // defines a matte material (a diffusely reflecting surface)
 class Lambertian : public Material {
-  public:
-    Texture* albedo; // "whiteness", the measure of diffuse reflection from 0 to 1:
-                     // 0: black body that absorbs all incident radiation
-                     // 1: a body that reflects all incident radiation
+    public:
+        Texture* albedo; // "whiteness", the measure of diffuse reflection from 0 to 1:
+                        // 0: black body that absorbs all incident radiation
+                        // 1: a body that reflects all incident radiation
 
-    Lambertian(Texture* albedo) :
-        albedo(albedo) { }
+        Lambertian(Texture* albedo) :
+            albedo(albedo) { }
 
-    virtual bool scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& r_scattered) const {
-        // simulating a matte object reflection by choosing a
-        // random point in the unit sphere with center p(t) + N
-        Vec3 target = rec.p + rec.surface_normal + Random::point_in_unit_sphere();
-        r_scattered = Ray(rec.p, target - rec.p, r_in.time());
-        attenuation = albedo->value(rec.u, rec.v, rec.p);
-        return true;
-        // note: we could also only scatter with some probability P, and have attenuation = (1/P)*albedo
-    };
+        virtual bool scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& r_scattered) const {
+            // simulating a matte object reflection by choosing a
+            // random point in the unit sphere with center p(t) + N
+            Vec3 target = rec.p + rec.surface_normal + Random::point_in_unit_sphere();
+            r_scattered = Ray(rec.p, target - rec.p, r_in.time());
+            attenuation = albedo->value(rec.u, rec.v, rec.p);
+            return true;
+            // note: we could also only scatter with some probability P, and have attenuation = (1/P)*albedo
+        };
 };
 
 class Metal : public Material {
-  public:
-    Vec3 albedo; // "whiteness", the measure of diffuse reflection from 0 to 1:
-                 // 0: black body that absorbs all incident radiation
-                 // 1: a body that reflects all incident radiation
-    float fuzz;
+    public:
+        Vec3 albedo; // "whiteness", the measure of diffuse reflection from 0 to 1:
+                    // 0: black body that absorbs all incident radiation
+                    // 1: a body that reflects all incident radiation
+        float fuzz;
 
-    Metal(const Vec3& albedo, float fuzz = 0.0) :
-        albedo(albedo),
-        fuzz(fuzz >= 1.0 ? 1.0 : fuzz <= 0.0 ? 0.0 : fuzz) { }
+        Metal(const Vec3& albedo, float fuzz = 0.0) :
+            albedo(albedo),
+            fuzz(fuzz >= 1.0 ? 1.0 : fuzz <= 0.0 ? 0.0 : fuzz) { }
 
-    virtual bool scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& r_scattered) const {
-        Vec3 reflected = reflect(unit_vector(r_in.direction()), rec.surface_normal);
-        r_scattered = Ray(rec.p, reflected + fuzz * Random::point_in_unit_sphere());
-        attenuation = albedo;
-        return dot(r_scattered.direction(), rec.surface_normal) > 0.0;
-    };
+        virtual bool scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& r_scattered) const {
+            Vec3 reflected = reflect(unit_vector(r_in.direction()), rec.surface_normal);
+            r_scattered = Ray(rec.p, reflected + fuzz * Random::point_in_unit_sphere());
+            attenuation = albedo;
+            return dot(r_scattered.direction(), rec.surface_normal) > 0.0;
+        };
 };
 
 // defines a clear material such as water, glass, and diamonds

@@ -1,4 +1,3 @@
-#pragma once
 #ifndef BoxHH
 #define BoxHH
 

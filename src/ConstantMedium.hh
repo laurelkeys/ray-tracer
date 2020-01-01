@@ -1,4 +1,3 @@
-#pragma once
 #ifndef CONSTANTMEDIUMHH
 #define CONSTANTMEDIUMHH
 

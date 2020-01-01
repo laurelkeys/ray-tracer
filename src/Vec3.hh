@@ -1,4 +1,3 @@
-#pragma once
 #ifndef VEC3HH
 #define VEC3HH
 

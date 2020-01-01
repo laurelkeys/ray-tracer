@@ -16,6 +16,7 @@ def get_parser():
     parser.add_argument("fname", type=str, help="Output image file name (with path)")
     parser.add_argument("dy", type=int, nargs='?', default=2, help="Print after every dy rows (defaults to 2)")
     parser.add_argument("--keep_ppm", "-ppm", action="store_true", help="Keep the original PPM output image")
+    parser.add_argument("--background", "-bg", action="store_true", help="Hack to avoid popping window to front after each update")
     return parser
 
 if __name__ == "__main__":
@@ -42,8 +43,11 @@ if __name__ == "__main__":
                 x, y = 0, 0
                 nx, ny = map(int, line.split(' '))
                 img = np.full(shape=(ny, nx, 3), fill_value=255, dtype='uint8')
-                plt.figure(img_name)
+                fig = plt.figure(img_name)
                 plt.axis('off')
+                if args.background:
+                    plt.ion()
+                    plt.show()
                 print(f">>> {nx} x {ny} = {nx * ny} pixels")
             elif line_count >= 4:
                 r, g, b = map(int, line.split(' '))
@@ -55,7 +59,11 @@ if __name__ == "__main__":
                     if y % args.dy == 0:
                         if plt.fignum_exists(img_name):
                             plt.imshow(img, interpolation='none', vmin=0, vmax=255)
-                            plt.pause(0.001)
+                            if not args.background:
+                                plt.pause(0.001)
+                            else:
+                                # fig.canvas.draw_idle()
+                                fig.canvas.start_event_loop(0.001)
                     print(f">>> {100*(line_count - 3)/(nx * ny):.1f}% of pixels processed ({line_count - 3} / {nx * ny})", end='\r')
     output.close()
     print(f">>> 100.0% of pixels processed ({nx * ny} / {nx * ny})")

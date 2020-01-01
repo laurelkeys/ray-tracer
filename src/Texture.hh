@@ -1,4 +1,3 @@
-#pragma once
 #ifndef TEXTUREHH
 #define TEXTUREHH
 

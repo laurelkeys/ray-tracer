@@ -1,4 +1,3 @@
-#pragma once
 #ifndef BVHNODEHH
 #define BVHNODEHH
 

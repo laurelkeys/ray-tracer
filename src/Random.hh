@@ -1,9 +1,9 @@
-#pragma once
 #ifndef RANDOMHH
 #define RANDOMHH
 
-#include "Vec3.hh"
 #include <random>
+
+#include "Vec3.hh"
 
 namespace Random {
     namespace {

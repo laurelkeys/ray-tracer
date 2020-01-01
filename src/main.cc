@@ -15,19 +15,21 @@ Vec3 visible_color(const Ray& r, Hittable* world, int depth);
 int MAX_DEPTH = 50; // maximum amount of calculated ray reflections
 
 int main() {
-    int nx = 200;
-    int ny = 100;
-    int ns = 10; // number of samples per pixel
-    // int nx = 1200;
-    // int ny = 800;
-    // int ns = 220;
+    // int nx = 200;
+    // int ny = 100;
+    // int ns = 10; // number of samples per pixel
+    int nx = 1200;
+    int ny = 800;
+    int ns = 20;
 
     cout << "P3\n" << nx << " " << ny << "\n255\n";
 
-    Hittable* world = Scene::wikipedia_scene();
+    Hittable* world = Scene::wikipedia_scene_sss();
 
-    Vec3 look_from(13.0, 2.0, 3.0);
+    Vec3 look_from(0.0, 0.0, 6.0);
     Vec3 look_at(0.0, 0.0, 0.0);
+    // Vec3 look_from(13.0, 2.0, 3.0);
+    // Vec3 look_at(0.0, 0.0, 0.0);
     // Vec3 look_from(378, 278, -700);
     // Vec3 look_at(278, 278, 0);
 
@@ -80,7 +82,9 @@ Vec3 visible_color(const Ray& r, Hittable* world, int depth) {
             return emitted + attenuation * visible_color(r_scattered, world, depth + 1);
         }
         return emitted;
-    }
-    // return sky_gradient(r);
-    return Vec3(0.0, 0.0, 0.0); // BLACK
+    } else
+    // FIXME if the image is all black try changing this to white
+    // return Vec3(0.0, 0.0, 0.0); // BLACK
+    // return Vec3(1.0, 1.0, 1.0); // WHITE
+    return sky_gradient(r);
 }

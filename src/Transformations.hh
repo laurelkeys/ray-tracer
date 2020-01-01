@@ -1,4 +1,3 @@
-#pragma once
 #ifndef TRANSFORMATIONSHH
 #define TRANSFORMATIONSHH
 

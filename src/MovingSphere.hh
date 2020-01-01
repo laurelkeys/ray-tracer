@@ -1,4 +1,3 @@
-#pragma once
 #ifndef MOVINGSPHEREHH
 #define MOVINGSPHEREHH
 

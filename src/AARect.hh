@@ -1,4 +1,3 @@
-#pragma once
 #ifndef AARECTHH
 #define AARECTHH
 
