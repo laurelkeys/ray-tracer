@@ -23,3 +23,5 @@ Below are some 1200 x 800 images with 10 samples per pixel, which take over a mi
 *obs.:* If you have [ImageMagick](https://imagemagick.org/script/convert.php) installed, you can convert the generated **.ppm** file to **.png** with: 
 
 > `$ g++ -o main main.cc && .\main > [file_name].ppm && magick convert [file_name].ppm [file_name].png`.
+
+Or simply run `$ python render.py [file_name] -O` (add `--watch` to see the rendering progress).

@@ -7,8 +7,8 @@
 
 class HittableList : public Hittable {
     public:
-        int list_size;
         Hittable** list;
+        int list_size;
 
         HittableList() { }
         HittableList(Hittable** list, int n) :

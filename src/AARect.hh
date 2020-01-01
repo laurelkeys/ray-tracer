@@ -11,12 +11,13 @@
 
 class XYRect : public Hittable {
     public:
-        Material* material_ptr;
         float x0, x1, y0, y1, k; // rect in the plane z(t) = k
+        Material* material_ptr;
 
         XYRect() { }
         XYRect(float x0, float x1, float y0, float y1, float k, Material* mat) :
-            x0(x0), x1(x1), y0(y0), y1(y1), 
+            x0(x0), x1(x1), 
+            y0(y0), y1(y1), 
             k(k), material_ptr(mat) { }
 
         virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
@@ -29,12 +30,13 @@ class XYRect : public Hittable {
 
 class XZRect : public Hittable {
     public:
-        Material* material_ptr;
         float x0, x1, z0, z1, k; // rect in the plane y(t) = k
+        Material* material_ptr;
 
         XZRect() { }
         XZRect(float x0, float x1, float z0, float z1, float k, Material* mat) :
-            x0(x0), x1(x1), z0(z0), z1(z1), 
+            x0(x0), x1(x1), 
+            z0(z0), z1(z1), 
             k(k), material_ptr(mat) { }
 
         virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
@@ -47,12 +49,13 @@ class XZRect : public Hittable {
 
 class YZRect : public Hittable {
     public:
-        Material* material_ptr;
         float y0, y1, z0, z1, k; // rect in the plane x(t) = k
+        Material* material_ptr;
 
         YZRect() { }
         YZRect(float y0, float y1, float z0, float z1, float k, Material* mat) :
-            y0(y0), y1(y1), z0(z0), z1(z1), 
+            y0(y0), y1(y1), 
+            z0(z0), z1(z1), 
             k(k), material_ptr(mat) { }
 
         virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;

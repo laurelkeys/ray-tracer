@@ -15,12 +15,12 @@ Vec3 visible_color(const Ray& r, Hittable* world, int depth);
 int MAX_DEPTH = 50; // maximum amount of calculated ray reflections
 
 int main() {
-    // int nx = 200;
-    // int ny = 100;
-    // int ns = 10; // number of samples per pixel
-    int nx = 1200;
-    int ny = 800;
-    int ns = 100;
+    int nx = 200;
+    int ny = 100;
+    int ns = 10; // number of samples per pixel
+    // int nx = 1200;
+    // int ny = 800;
+    // int ns = 100;
 
     cout << "P3\n" << nx << " " << ny << "\n255\n";
 

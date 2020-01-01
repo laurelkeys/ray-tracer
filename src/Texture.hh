@@ -60,8 +60,8 @@ class NoiseTexture : public Texture {
 
 class ImageTexture : public Texture {
     public:
-        int nx, ny;
         unsigned char* data;
+        int nx, ny;
 
         ImageTexture() { }
         ImageTexture(unsigned char* pixels, int A, int B) :
