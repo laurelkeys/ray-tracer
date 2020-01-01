@@ -2,10 +2,8 @@
 #ifndef TRANSFORMATIONSHH
 #define TRANSFORMATIONSHH
 
-#include <float.h>
-#include <math.h>
-
 #include "AABB.hh"
+#include "Constants.hh"
 #include "Hittable.hh"
 #include "Ray.hh"
 #include "Vec3.hh"
@@ -15,7 +13,7 @@ class FlipNormals : public Hittable {
         Hittable* ptr;
 
         FlipNormals(Hittable* p) :
-            ptr(p) {}
+            ptr(p) { }
 
         virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const {
             if (ptr->hit(r, t_min, t_max, rec)) {
@@ -37,7 +35,7 @@ class Translate : public Hittable {
 
         Translate(Hittable* p, const Vec3& displacement) :
             ptr(p),
-            offset(displacement) {}
+            offset(displacement) { }
 
         virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
         virtual bool bounding_box(float t0, float t1, AABB& box) const;
@@ -80,14 +78,14 @@ class RotateY : public Hittable {
 
 RotateY::RotateY(Hittable* p, float angle_in_degrees) :
     ptr(p) {
-    float radians = (M_PI / 180.0) * angle_in_degrees;
+    float radians = (_PI_ / 180.0) * angle_in_degrees;
     sin_theta = sin(radians);
     cos_theta = cos(radians);
 
     has_bbox = ptr->bounding_box(0, 1, bbox);
 
-    Vec3 min(FLT_MAX, FLT_MAX, FLT_MAX);
-    Vec3 max(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+    Vec3 min(_INFINITY_, _INFINITY_, _INFINITY_);
+    Vec3 max(-_INFINITY_, -_INFINITY_, -_INFINITY_);
     for (int i = 0; i <= 1; ++i)
         for (int j = 0; j <= 1; ++j)
             for (int k = 0; k <= 1; ++k) {

@@ -2,13 +2,13 @@
 #ifndef CONSTANTMEDIUMHH
 #define CONSTANTMEDIUMHH
 
-#include <float.h>
-
+#include "Constants.hh"
 #include "Hittable.hh"
 #include "Material.hh"
 #include "Random.hh"
 #include "Ray.hh"
 #include "Texture.hh"
+#include "Vec3.hh"
 
 class ConstantMedium : public Hittable {
     public:
@@ -33,8 +33,8 @@ class ConstantMedium : public Hittable {
 
 bool ConstantMedium::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const {
     HitRecord rec1, rec2;
-    if (boundary->hit(r, -FLT_MAX, FLT_MAX, rec1)) {
-        if (boundary->hit(r, rec1.t + 0.0001, FLT_MAX, rec2)) {
+    if (boundary->hit(r, -_INFINITY_, _INFINITY_, rec1)) {
+        if (boundary->hit(r, rec1.t + 0.0001, _INFINITY_, rec2)) {
             if (rec1.t < t_min)
                 rec1.t = t_min;
 

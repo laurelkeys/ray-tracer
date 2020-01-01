@@ -28,7 +28,7 @@ class Isotropic : public Material {
     Texture* albedo;
 
     Isotropic(Texture* a) :
-        albedo(a) {}
+        albedo(a) { }
 
     virtual bool scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& scattered) const {
         scattered = Ray(rec.p, Random::point_in_unit_sphere());
@@ -42,7 +42,7 @@ class DiffuseLight : public Material {
     Texture* emit;
 
     DiffuseLight(Texture* a) :
-        emit(a) {}
+        emit(a) { }
 
     virtual bool scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& scattered) const {
         return false;
@@ -57,11 +57,11 @@ class DiffuseLight : public Material {
 class Lambertian : public Material {
   public:
     Texture* albedo; // "whiteness", the measure of diffuse reflection from 0 to 1:
-        // 0: black body that absorbs all incident radiation
-        // 1: a body that reflects all incident radiation
+                     // 0: black body that absorbs all incident radiation
+                     // 1: a body that reflects all incident radiation
 
     Lambertian(Texture* albedo) :
-        albedo(albedo) {}
+        albedo(albedo) { }
 
     virtual bool scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& r_scattered) const {
         // simulating a matte object reflection by choosing a
@@ -77,13 +77,13 @@ class Lambertian : public Material {
 class Metal : public Material {
   public:
     Vec3 albedo; // "whiteness", the measure of diffuse reflection from 0 to 1:
-        // 0: black body that absorbs all incident radiation
-        // 1: a body that reflects all incident radiation
+                 // 0: black body that absorbs all incident radiation
+                 // 1: a body that reflects all incident radiation
     float fuzz;
 
     Metal(const Vec3& albedo, float fuzz = 0.0) :
         albedo(albedo),
-        fuzz(fuzz >= 1.0 ? 1.0 : fuzz <= 0.0 ? 0.0 : fuzz) {}
+        fuzz(fuzz >= 1.0 ? 1.0 : fuzz <= 0.0 ? 0.0 : fuzz) { }
 
     virtual bool scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& r_scattered) const {
         Vec3 reflected = reflect(unit_vector(r_in.direction()), rec.surface_normal);
@@ -101,7 +101,7 @@ class Dielectric : public Material {
         float refractive_index;
 
         Dielectric(float refractive_index) :
-            refractive_index(refractive_index) {}
+            refractive_index(refractive_index) { }
 
         virtual bool scatter(const Ray& r_in, const HitRecord& rec, Vec3& attenuation, Ray& r_scattered) const {
             Vec3 outward_normal;

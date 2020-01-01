@@ -15,9 +15,9 @@ class AABB { // Axis-Aligned Bounding Box
         Vec3 _min;
         Vec3 _max;
 
-        AABB() {}
+        AABB() { }
         AABB(const Vec3& a, const Vec3& b) :
-            _min(a), _max(b) {}
+            _min(a), _max(b) { }
 
         Vec3 min() const { return _min; }
         Vec3 max() const { return _max; }
@@ -39,12 +39,16 @@ class AABB { // Axis-Aligned Bounding Box
 };
 
 AABB surrounding_box(AABB box0, AABB box1) {
-    Vec3 small(ffmin(box0.min().x(), box1.min().x()),
-               ffmin(box0.min().y(), box1.min().y()),
-               ffmin(box0.min().z(), box1.min().z()));
-    Vec3 big(ffmax(box0.max().x(), box1.max().x()),
-             ffmax(box0.max().y(), box1.max().y()),
-             ffmax(box0.max().z(), box1.max().z()));
+    Vec3 small(
+        ffmin(box0.min().x(), box1.min().x()),
+        ffmin(box0.min().y(), box1.min().y()),
+        ffmin(box0.min().z(), box1.min().z())
+    );
+    Vec3 big(
+        ffmax(box0.max().x(), box1.max().x()),
+        ffmax(box0.max().y(), box1.max().y()),
+        ffmax(box0.max().z(), box1.max().z())
+    );
     return AABB(small, big);
 }
 

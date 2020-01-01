@@ -47,6 +47,6 @@ namespace Random {
         } while (p.squared_length() >= 1.0);
         return p;
     }
-};
+}
 
 #endif

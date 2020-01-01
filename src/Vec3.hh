@@ -2,15 +2,15 @@
 #ifndef VEC3HH
 #define VEC3HH
 
-#include <iostream>
 #include <math.h>
 #include <stdlib.h>
+#include <iostream>
 
 class Vec3 {
     public:
         float e[3];
 
-        Vec3() {}
+        Vec3() { }
         Vec3(float e0, float e1, float e2) { e[0] = e0; e[1] = e1; e[2] = e2; }
 
         inline float x() const { return e[0]; }
@@ -94,8 +94,8 @@ inline float dot(const Vec3& v1, const Vec3& v2) {
 
 // cross product (v1 x v2)
 inline Vec3 cross(const Vec3& v1, const Vec3& v2) {
-    return Vec3((v1.e[1] * v2.e[2] - v1.e[2] * v2.e[1]), // v1.y * v2.z - v1.z * v2.y
-                (v1.e[2] * v2.e[0] - v1.e[0] * v2.e[2]), // v1.z * v2.x - v1.x * v2.z
+    return Vec3((v1.e[1] * v2.e[2] - v1.e[2] * v2.e[1]),  // v1.y * v2.z - v1.z * v2.y
+                (v1.e[2] * v2.e[0] - v1.e[0] * v2.e[2]),  // v1.z * v2.x - v1.x * v2.z
                 (v1.e[0] * v2.e[1] - v1.e[1] * v2.e[0])); // v1.x * v2.y - v1.y * v2.x
 }
 

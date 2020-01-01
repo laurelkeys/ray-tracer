@@ -16,7 +16,7 @@ class Box : public Hittable {
         Vec3 pmin, pmax;
         Hittable* list_ptr;
 
-        Box() {}
+        Box() { }
         Box(const Vec3& p0, const Vec3& p1, Material* ptr);
 
         virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
@@ -34,16 +34,13 @@ Box::Box(const Vec3& p0, const Vec3& p1, Material* ptr) {
 
     // planes z = p1.z and z = p0.z
     list[0] = new XYRect(p0.x(), p1.x(), p0.y(), p1.y(), p1.z(), ptr);
-    list[1] = new FlipNormals(
-        new XYRect(p0.x(), p1.x(), p0.y(), p1.y(), p0.z(), ptr));
+    list[1] = new FlipNormals(new XYRect(p0.x(), p1.x(), p0.y(), p1.y(), p0.z(), ptr));
     // planes y = p1.y and y = p0.y
     list[2] = new XZRect(p0.x(), p1.x(), p0.z(), p1.z(), p1.y(), ptr);
-    list[3] = new FlipNormals(
-        new XZRect(p0.x(), p1.x(), p0.z(), p1.z(), p0.y(), ptr));
+    list[3] = new FlipNormals(new XZRect(p0.x(), p1.x(), p0.z(), p1.z(), p0.y(), ptr));
     // planes x = p1.x and x = p0.x
     list[4] = new YZRect(p0.y(), p1.y(), p0.z(), p1.z(), p1.x(), ptr);
-    list[5] = new FlipNormals(
-        new YZRect(p0.y(), p1.y(), p0.z(), p1.z(), p0.x(), ptr));
+    list[5] = new FlipNormals(new YZRect(p0.y(), p1.y(), p0.z(), p1.z(), p0.x(), ptr));
 
     list_ptr = new HittableList(list, 6);
 }

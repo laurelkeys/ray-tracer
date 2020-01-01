@@ -1,0 +1,1 @@
+images used for uv texture mapping

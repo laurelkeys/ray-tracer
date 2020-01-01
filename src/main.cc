@@ -1,7 +1,7 @@
-#include <float.h>
 #include <iostream>
 
 #include "Camera.hh"
+#include "Constants.hh"
 #include "Hittable.hh"
 #include "Random.hh"
 #include "Ray.hh"
@@ -15,21 +15,21 @@ Vec3 visible_color(const Ray& r, Hittable* world, int depth);
 int MAX_DEPTH = 50; // maximum amount of calculated ray reflections
 
 int main() {
-    // int nx = 200;
-    // int ny = 100;
-    // int ns = 10; // number of samples per pixel
-    int nx = 1200;
-    int ny = 800;
-    int ns = 220;
+    int nx = 200;
+    int ny = 100;
+    int ns = 10; // number of samples per pixel
+    // int nx = 1200;
+    // int ny = 800;
+    // int ns = 220;
 
     cout << "P3\n" << nx << " " << ny << "\n255\n";
 
-    Hittable* world = Scene::final();
+    Hittable* world = Scene::wikipedia_scene();
 
-    // Vec3 look_from(13.0, 2.0, 3.0);
-    // Vec3 look_at(0.0, 0.0, 0.0);
-    Vec3 look_from(378, 278, -700);
-    Vec3 look_at(278, 278, 0);
+    Vec3 look_from(13.0, 2.0, 3.0);
+    Vec3 look_at(0.0, 0.0, 0.0);
+    // Vec3 look_from(378, 278, -700);
+    // Vec3 look_at(278, 278, 0);
 
     float vfov = 40.0;
     float lens_aperture = 0.0;
@@ -71,7 +71,7 @@ Vec3 sky_gradient(const Ray& r) {
 Vec3 visible_color(const Ray& r, Hittable* world, int depth) {
     HitRecord rec;
     float t_min = 0.001; // decrease "shadow acne"
-    if (world->hit(r, t_min, FLT_MAX, rec)) {
+    if (world->hit(r, t_min, _INFINITY_, rec)) {
         Ray r_scattered;
         Vec3 attenuation;
         Vec3 emitted = rec.material_ptr->emitted(rec.u, rec.v, rec.p);

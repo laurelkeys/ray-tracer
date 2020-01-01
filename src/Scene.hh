@@ -3,7 +3,7 @@
 #define SCENEHH
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "../inc/stb_image.h"
+#include "inc/stb_image.h"
 
 #include "AARect.hh"
 #include "BVHNode.hh"
@@ -74,7 +74,7 @@ Hittable* Scene::final() {
     list[l++] = new ConstantMedium(boundary, 0.0001, new ConstantTexture(Vec3(1.0, 1.0, 1.0)));
 
     int nx, ny, nn;
-    unsigned char* texture_pixels = stbi_load("earthmap.jpg", &nx, &ny, &nn, 0);
+    unsigned char* texture_pixels = stbi_load("res/earthmap.jpg", &nx, &ny, &nn, 0);
     Material* emat = new Lambertian(new ImageTexture(texture_pixels, nx, ny));
     list[l++] = new Sphere(Vec3(400, 200, 400), 100, emat);
 
@@ -89,8 +89,9 @@ Hittable* Scene::final() {
                                  10, white);
     }
     list[l++] = new Translate(
-        new RotateY(new BVHNode(boxlist2, ns, 0.0, 1.0), 15),
-        Vec3(-100, 270, 395));
+                    new RotateY(new BVHNode(boxlist2, ns, 0.0, 1.0), 15),
+                    Vec3(-100, 270, 395)
+                );
 
     return new HittableList(list, l);
 }
@@ -136,11 +137,13 @@ Hittable* Scene::cornell_smoke() {
     list[i++] = new FlipNormals(new XYRect(0, 555, 0, 555, 555, white));
 
     Hittable* b1 = new Translate(
-        new RotateY(new Box(Vec3(0, 0, 0), Vec3(165, 165, 165), white), -18),
-        Vec3(130, 0, 65));
+                    new RotateY(new Box(Vec3(0, 0, 0), Vec3(165, 165, 165), white), -18),
+                    Vec3(130, 0, 65)
+                   );
     Hittable* b2 = new Translate(
-        new RotateY(new Box(Vec3(0, 0, 0), Vec3(165, 330, 165), white), 15),
-        Vec3(265, 0, 295));
+                    new RotateY(new Box(Vec3(0, 0, 0), Vec3(165, 330, 165), white), 15),
+                    Vec3(265, 0, 295)
+                   );
 
     list[i++] = new ConstantMedium(b1, 0.01, new ConstantTexture(Vec3(1.0, 1.0, 1.0)));
     list[i++] = new ConstantMedium(b2, 0.01, new ConstantTexture(Vec3(0.0, 0.0, 0.0)));
@@ -164,15 +167,15 @@ Hittable* Scene::cornell_box() {
     list[i++] = new XZRect(0, 555, 0, 555, 0, white);
     list[i++] = new FlipNormals(new XYRect(0, 555, 0, 555, 555, white));
     list[i++] = new Translate(
-        new RotateY(new Box(Vec3(0, 0, 0), Vec3(165, 165, 165), white),
-                    -18), // rotation
-        Vec3(130, 0, 65) // translation
-    );
+                    new RotateY(new Box(Vec3(0, 0, 0), Vec3(165, 165, 165), white),
+                                -18), // rotation
+                    Vec3(130, 0, 65)  // translation
+                );
     list[i++] = new Translate(
-        new RotateY(new Box(Vec3(0, 0, 0), Vec3(165, 330, 165), white),
-                    15), // rotation
-        Vec3(265, 0, 295) // translation
-    );
+                    new RotateY(new Box(Vec3(0, 0, 0), Vec3(165, 330, 165), white),
+                                15),  // rotation
+                    Vec3(265, 0, 295) // translation
+                );
     return new HittableList(list, i);
 }
 
@@ -190,7 +193,7 @@ Hittable* Scene::simple_light() {
 
 Hittable* Scene::earth() {
     int nx, ny, nn;
-    unsigned char* texture_pixels = stbi_load("earthmap.jpg", &nx, &ny, &nn, 0);
+    unsigned char* texture_pixels = stbi_load("res/earthmap.jpg", &nx, &ny, &nn, 0);
     Material* material_ptr = new Lambertian(new ImageTexture(texture_pixels, nx, ny));
     return new Sphere(Vec3(0, 0, 0), 2, material_ptr);
 }

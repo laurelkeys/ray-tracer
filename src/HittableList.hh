@@ -11,10 +11,10 @@ class HittableList : public Hittable {
         int list_size;
         Hittable** list;
 
-        HittableList() {}
+        HittableList() { }
         HittableList(Hittable** list, int n) :
             list(list),
-            list_size(n) {}
+            list_size(n) { }
 
         virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
         virtual bool bounding_box(float t0, float t1, AABB& box) const;

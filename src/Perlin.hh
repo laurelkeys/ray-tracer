@@ -18,7 +18,9 @@ inline float perlin_interp(Vec3 c[2][2][2], float u, float v, float w) {
             for (int k = 0; k <= 1; ++k) {
                 Vec3 weight_v(u - i, v - j, w - k);
                 // trilinear interpolation
-                acc += (i * uu + (1 - i) * (1 - uu)) * (j * vv + (1 - j) * (1 - vv)) * (k * ww + (1 - k) * (1 - ww)) * dot(c[i][j][k], weight_v);
+                acc += (i * uu + (1 - i) * (1 - uu)) * 
+                       (j * vv + (1 - j) * (1 - vv)) * 
+                       (k * ww + (1 - k) * (1 - ww)) * dot(c[i][j][k], weight_v);
             }
     return acc;
 }
@@ -40,7 +42,11 @@ class Perlin {
             for (int di = 0; di <= 1; ++di)
                 for (int dj = 0; dj <= 1; ++dj)
                     for (int dk = 0; dk <= 1; ++dk)
-                        c[di][dj][dk] = ranvec[perm_x[(i + di) & 255] ^ perm_y[(j + dj) & 255] ^ perm_z[(k + dk) & 255]];
+                        c[di][dj][dk] = ranvec[
+                            perm_x[(i + di) & 255] ^ 
+                            perm_y[(j + dj) & 255] ^ 
+                            perm_z[(k + dk) & 255]
+                        ];
 
             float u = p.x() - i;
             float v = p.y() - j;
