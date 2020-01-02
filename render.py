@@ -38,7 +38,6 @@ if __name__ == "__main__":
     # compile main.cc into main.exe
     cmd = build_cmd(args)
     run(cmd, cwd=os.path.join(os.getcwd(), "src"))
-    exit()
 
     # render image
     start_time = time()

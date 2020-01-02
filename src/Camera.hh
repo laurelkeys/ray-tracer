@@ -23,6 +23,7 @@ class Camera {
                float vfov, float aspect,
                float t0, float t1,
                bool in_degrees = true) {
+            // note: camera shutter is open from t0 to t1 (allowing for motion blur)
             time0 = t0;
             time1 = t1;
 

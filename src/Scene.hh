@@ -20,6 +20,7 @@
 
 namespace Scene {
     Hittable* final();
+    Hittable* cornell_glass_balls();
     Hittable* cornell_balls();
     Hittable* cornell_smoke();
     Hittable* cornell_box();
@@ -94,6 +95,28 @@ Hittable* Scene::final() {
                 );
 
     return new HittableList(list, l);
+}
+
+Hittable* Scene::cornell_glass_balls() {
+    Hittable** list = new Hittable*[8];
+
+    Material* red = new Lambertian(new ConstantTexture(Vec3(0.65, 0.05, 0.05)));
+    Material* white = new Lambertian(new ConstantTexture(Vec3(0.73, 0.73, 0.73)));
+    Material* blue = new Lambertian(new ConstantTexture(Vec3(0.3, 0.65, 0.8)));
+    Material* light = new DiffuseLight(new ConstantTexture(Vec3(7, 7, 7)));
+
+    int i = 0;
+    list[i++] = new FlipNormals(new YZRect(0, 555, 0, 555, 555, red));
+    list[i++] = new YZRect(0, 555, 0, 555, 0, blue);
+    list[i++] = new XZRect(113, 443, 127, 432, 554, light);
+    list[i++] = new FlipNormals(new XZRect(0, 555, 0, 555, 555, white));
+    list[i++] = new XZRect(0, 555, 0, 555, 0, white);
+    list[i++] = new FlipNormals(new XYRect(0, 555, 0, 555, 555, white));
+
+    // note: a volume inside a dielectric is a subsurface material
+    list[i++] = new Sphere(Vec3(160, 100, 145), 100, new Dielectric(1.5));
+    list[i++] = new Translate(new Sphere(Vec3(165, 100, 125), 100, new Dielectric(1.5)), Vec3(265, 0, 295));
+    return new HittableList(list, i);
 }
 
 Hittable* Scene::cornell_balls() {
