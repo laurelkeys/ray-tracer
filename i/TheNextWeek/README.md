@@ -9,3 +9,4 @@
 | ![](cornell_box_yrot.png) | ![](smoke.png) | ![](smoke_400spp.png) | ![](no_smoke_400spp.png) |
 | ![](smoke_1Kspp.png) | ![](smoke_200spp.png) | ![](final.png) | ![](final_1Kspp.png) |
 | ![](cornell_balls_500spp.png) | ![](cornell_final_500spp.png) | ![](cornell_final2_500spp.png) | ![](cornell_final3_500spp.png) |
+| ![](glass_balls_1Kspp.png) | ![](glass_balls_10Kspp.png) | ![](glass_balls_32Kspp.png) | ![](glass_balls_100spp.png) |

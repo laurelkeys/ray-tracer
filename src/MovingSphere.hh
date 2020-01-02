@@ -1,11 +1,11 @@
 #ifndef MOVINGSPHEREHH
 #define MOVINGSPHEREHH
 
-#include "Vec3.hh"
-#include "Ray.hh"
 #include "AABB.hh"
 #include "Hittable.hh"
 #include "Material.hh"
+#include "Ray.hh"
+#include "Vec3.hh"
 
 class MovingSphere : public Hittable {
     public:
@@ -15,15 +15,15 @@ class MovingSphere : public Hittable {
         Material* material_ptr;
 
         MovingSphere() { }
-        MovingSphere(Vec3 cen0, Vec3 cen1, float t0, float t1, 
-                     float radius, Material* material_ptr) : 
-            center0(cen0), 
-            center1(cen1), 
-            time0(t0), 
-            time1(t1), 
-            radius(radius), 
+        MovingSphere(Vec3 cen0, Vec3 cen1, float t0, float t1,
+                     float radius, Material* material_ptr) :
+            center0(cen0),
+            center1(cen1),
+            time0(t0),
+            time1(t1),
+            radius(radius),
             material_ptr(material_ptr) { }
-        
+
         virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
         virtual bool bounding_box(float t0, float t1, AABB& box) const;
 
@@ -42,8 +42,8 @@ bool MovingSphere::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) c
     Vec3 o_c = r.origin() - center(r.time()); // A - C
     float a = dot(r.direction(), r.direction()); // <B, B>
     float b = dot(r.direction(), o_c); // <B, A - C>
-    float c = dot(o_c, o_c) - radius*radius; // <A - C, A - C> - R*R
-    float discriminant = b*b - a*c;
+    float c = dot(o_c, o_c) - radius * radius; // <A - C, A - C> - R*R
+    float discriminant = b * b - a * c;
 
     if (discriminant > 0.0) { // the ray hits the sphere
         // note: we didn't use 2 factors above since they'd cancel out below
@@ -55,7 +55,7 @@ bool MovingSphere::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) c
             rec.material_ptr = material_ptr;
             return true;
         }
-        
+
         t = (-b + sqrt(discriminant)) / a;
         if (t_min < t && t < t_max) {
             rec.t = t;
@@ -65,7 +65,7 @@ bool MovingSphere::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) c
             return true;
         }
     }
-    
+
     // note: we consider that if a ray tangentiates the sphere it does not hit it
     return false;
 }

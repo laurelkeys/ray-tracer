@@ -1,12 +1,12 @@
 #include <iostream>
-#include <float.h>
 
-#include "Vec3.hh"
-#include "Ray.hh"
-#include "Random.hh"
 #include "Camera.hh"
+#include "Constants.hh"
 #include "Hittable.hh"
+#include "Random.hh"
+#include "Ray.hh"
 #include "Scene.hh"
+#include "Vec3.hh"
 
 using namespace std;
 
@@ -15,31 +15,33 @@ Vec3 visible_color(const Ray& r, Hittable* world, int depth);
 int MAX_DEPTH = 50; // maximum amount of calculated ray reflections
 
 int main() {
-    // int nx = 200;
-    // int ny = 100;
-    // int ns = 10; // number of samples per pixel
-    int nx = 1200;
-    int ny = 800;
-    int ns = 220;
-    
+    int nx = 200;
+    int ny = 100;
+    int ns = 100; // number of samples per pixel
+    // int nx = 1200;
+    // int ny = 800;
+    // int ns = 100;
+
     cout << "P3\n" << nx << " " << ny << "\n255\n";
 
-    Hittable* world = Scene::final();
+    Hittable* world = Scene::cornell_glass_balls();
 
+    // Vec3 look_from(0.0, 0.0, 6.0);
+    // Vec3 look_at(0.0, 0.0, 0.0);
     // Vec3 look_from(13.0, 2.0, 3.0);
     // Vec3 look_at(0.0, 0.0, 0.0);
-    Vec3 look_from(378, 278, -700);
+    Vec3 look_from(278, 278, -800);
     Vec3 look_at(278, 278, 0);
 
     float vfov = 40.0;
     float lens_aperture = 0.0;
     float dist_to_focus = 10.0;
-    
-    Camera cam(lens_aperture, dist_to_focus, 
-               look_from, look_at, Vec3(0, 1, 0), 
+
+    Camera cam(lens_aperture, dist_to_focus,
+               look_from, look_at, Vec3(0, 1, 0),
                vfov, float(nx) / float(ny), 0.0, 1.0);
-    
-    for (int j = ny-1; j >= 0; --j) {
+
+    for (int j = ny - 1; j >= 0; --j) {
         for (int i = 0; i < nx; ++i) {
             Vec3 color(0.0, 0.0, 0.0);
             for (int s = 0; s < ns; ++s) {
@@ -53,9 +55,9 @@ int main() {
             color = Vec3(sqrt(color.r()), sqrt(color.g()), sqrt(color.b())); // gamma 2
 
             // mapping [0.0, 1.0] to [0, 255]
-            int ir = int(255.99*color.r());
-            int ig = int(255.99*color.g());
-            int ib = int(255.99*color.b());
+            int ir = int(255.99 * color.r());
+            int ig = int(255.99 * color.g());
+            int ib = int(255.99 * color.b());
             cout << ir << " " << ig << " " << ib << "\n";
         }
     }
@@ -69,18 +71,20 @@ Vec3 sky_gradient(const Ray& r) {
 }
 
 Vec3 visible_color(const Ray& r, Hittable* world, int depth) {
-    HitRecord rec;    
+    HitRecord rec;
     float t_min = 0.001; // decrease "shadow acne"
-    if (world->hit(r, t_min, FLT_MAX, rec)) {
+    if (world->hit(r, t_min, _INFINITY_, rec)) {
         Ray r_scattered;
         Vec3 attenuation;
         Vec3 emitted = rec.material_ptr->emitted(rec.u, rec.v, rec.p);
         if (depth < MAX_DEPTH && rec.material_ptr->scatter(r, rec, attenuation, r_scattered)) {
             // increases depth to limit the amount of calculated reflections
-            return emitted + attenuation * visible_color(r_scattered, world, depth+1);
+            return emitted + attenuation * visible_color(r_scattered, world, depth + 1);
         }
         return emitted;
     }
-    // return sky_gradient(r);
+    // FIXME
     return Vec3(0.0, 0.0, 0.0); // BLACK
+    return Vec3(1.0, 1.0, 1.0); // WHITE
+    return sky_gradient(r);
 }

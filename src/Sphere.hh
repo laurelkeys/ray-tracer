@@ -1,17 +1,18 @@
 #ifndef SPHEREHH
 #define SPHEREHH
 
-#include "Vec3.hh"
-#include "Ray.hh"
 #include "AABB.hh"
-#include "Material.hh"
+#include "Constants.hh"
 #include "Hittable.hh"
+#include "Material.hh"
+#include "Ray.hh"
+#include "Vec3.hh"
 
 void get_sphere_uv(const Vec3& p, float& u, float& v) {
-    float phi = atan2(p.z(), p.x()); //   [-π, π]
-    float theta = asin(p.y());       // [-π/2, π/2]
-    u = 1 - (phi + M_PI) / (2*M_PI); //   [-1, 1]
-    v = (theta + M_PI/2) / M_PI;     //   [ 0, 1]
+    float phi = atan2(p.z(), p.x());   //   [-π, π]
+    float theta = asin(p.y());         // [-π/2, π/2]
+    u = 1 - (phi + _PI_) / (2 * _PI_); //   [-1, 1]
+    v = (theta + _PI_ / 2) / _PI_;     //   [ 0, 1]
 }
 
 class Sphere : public Hittable {
@@ -21,9 +22,9 @@ class Sphere : public Hittable {
         Material* material_ptr;
 
         Sphere() { }
-        Sphere(Vec3 center, float radius, Material* material_ptr) : 
-            center(center), 
-            radius(radius), 
+        Sphere(Vec3 center, float radius, Material* material_ptr) :
+            center(center),
+            radius(radius),
             material_ptr(material_ptr) { }
 
         virtual bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const;
@@ -42,8 +43,8 @@ bool Sphere::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const {
     Vec3 o_c = r.origin() - center; // A - C
     float a = dot(r.direction(), r.direction()); // <B, B>
     float b = dot(r.direction(), o_c); // <B, A - C>
-    float c = dot(o_c, o_c) - radius*radius; // <A - C, A - C> - R*R
-    float discriminant = b*b - a*c;
+    float c = dot(o_c, o_c) - radius * radius; // <A - C, A - C> - R*R
+    float discriminant = b * b - a * c;
 
     if (discriminant > 0.0) { // the ray hits the sphere
         // note: we didn't use 2 factors above since they'd cancel out below
@@ -56,7 +57,7 @@ bool Sphere::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const {
             rec.material_ptr = material_ptr;
             return true;
         }
-        
+
         t = (-b + sqrt(discriminant)) / a;
         if (t_min < t && t < t_max) {
             rec.t = t;
@@ -67,7 +68,7 @@ bool Sphere::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const {
             return true;
         }
     }
-    
+
     // note: we consider that if a ray tangentiates the sphere it does not hit it
     return false;
 }

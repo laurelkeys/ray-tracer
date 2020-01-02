@@ -1,9 +1,9 @@
 #ifndef HITTABLEHH
 #define HITTABLEHH
 
-#include "Vec3.hh"
-#include "Ray.hh"
 #include "AABB.hh"
+#include "Ray.hh"
+#include "Vec3.hh"
 
 class Material; // forward declaration (so Material and Hittable can refer to each other)
 

@@ -10,8 +10,8 @@ class Ray {
         float _time;
 
         Ray() { }
-        Ray(const Vec3& a, const Vec3& b, float ti = 0.0) : 
-            A(a), 
+        Ray(const Vec3& a, const Vec3& b, float ti = 0.0) :
+            A(a),
             B(b),
             _time(ti) { }
 
@@ -21,7 +21,7 @@ class Ray {
         float time() const { return _time; }
 
         // p(t) = A + t*B
-        Vec3 point_at_parameter(float t) const { return A + t*B; }
+        Vec3 point_at_parameter(float t) const { return A + t * B; }
 };
 
 #endif
