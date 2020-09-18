@@ -42,8 +42,8 @@ if __name__ == "__main__":
     # render image
     start_time = time()
     with open(f"{img_name}.ppm", "w+") as output:
-        process = Popen(["./src/main"], stdout=PIPE, 
-                        cwd=os.path.join(os.getcwd(), "src"), 
+        process = Popen(["./src/main"], stdout=PIPE,
+                        cwd=os.path.join(os.getcwd(), "src"),
                         universal_newlines=True, bufsize=1)
         line_count = 0
         while True:
@@ -78,9 +78,9 @@ if __name__ == "__main__":
                             fig.canvas.start_event_loop(0.001)
     print(f">>> 100.0% of pixels processed ({n_of_pixels} / {n_of_pixels})")
     print(f"Δt = {(time() - start_time):.2f}s")
-    
+
     # convert PPM rendered imageinto PNG
     run(["magick", "convert", f"{img_name}.ppm", f"{img_name}.png"])
-    
+
     if not args.keep_ppm:
         run(["rm", f"{img_name}.ppm"])

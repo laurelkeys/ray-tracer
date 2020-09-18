@@ -19,6 +19,7 @@
 #include "Vec3.hh"
 
 namespace Scene {
+    Hittable* demo();
     Hittable* final();
     Hittable* cornell_glass_balls();
     Hittable* cornell_balls();
@@ -32,6 +33,42 @@ namespace Scene {
     Hittable* random_scene();
     Hittable* wikipedia_scene();
     Hittable* wikipedia_scene_sss();
+}
+
+Hittable* Scene::demo() {
+    Hittable** list = new Hittable*[9];
+
+    Material* red = new Lambertian(new ConstantTexture(Vec3(0.65, 0.05, 0.05)));
+    Material* white = new Lambertian(new ConstantTexture(Vec3(0.73, 0.73, 0.73)));
+    Material* green = new Lambertian(new ConstantTexture(Vec3(0.12, 0.45, 0.15)));
+    Material* light = new DiffuseLight(new ConstantTexture(Vec3(7, 7, 7)));
+
+    int i = 0;
+    list[i++] = new FlipNormals(new YZRect(0, 555, 0, 555, 555, green));
+    list[i++] = new YZRect(0, 555, 0, 555, 0, red);
+    list[i++] = new XZRect(113, 443, 127, 432, 554, light);
+    list[i++] = new FlipNormals(new XZRect(0, 555, 0, 555, 555, white));
+    list[i++] = new XZRect(0, 555, 0, 555, 0, white);
+    list[i++] = new FlipNormals(new XYRect(0, 555, 0, 555, 555, white));
+
+    Hittable* b1 = new Translate(
+                    new RotateY(new Box(Vec3(0, 0, 0), Vec3(165, 165, 165), white), -18),
+                    Vec3(130, 0, 65)
+                   );
+    Hittable* b2 = new Translate(
+                    new RotateY(new Box(Vec3(0, 0, 0), Vec3(165, 330, 165), white), 15),
+                    Vec3(265, 0, 295)
+                   );
+    Hittable* s1 = new Translate(
+                    new RotateY(new Sphere(Vec3(0, 0, 0), 80, white), 15),
+                    Vec3(180, 280, 190)
+                   );
+
+    list[i++] = new ConstantMedium(b1, 0.01, new ConstantTexture(Vec3(1.0, 1.0, 1.0)));
+    list[i++] = new ConstantMedium(b2, 0.01, new ConstantTexture(Vec3(0.0, 0.0, 0.0)));
+    list[i++] = new ConstantMedium(s1, 0.1, new ConstantTexture(Vec3(0.4, 0.4, 0.4)));
+
+    return new HittableList(list, i);
 }
 
 Hittable* Scene::final() {

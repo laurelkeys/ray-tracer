@@ -12,7 +12,7 @@ using namespace std;
 
 Vec3 visible_color(const Ray& r, Hittable* world, int depth);
 
-int MAX_DEPTH = 50; // maximum amount of calculated ray reflections
+int MAX_DEPTH = 25; // maximum amount of calculated ray reflections
 
 int main() {
     int nx = 200;

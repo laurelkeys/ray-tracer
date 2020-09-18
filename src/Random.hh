@@ -49,4 +49,6 @@ namespace Random {
     }
 }
 
+// TODO: read https://codingnest.com/generating-random-numbers-using-c-standard-library-the-problems/
+
 #endif

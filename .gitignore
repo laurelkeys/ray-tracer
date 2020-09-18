@@ -5,6 +5,7 @@
 src/*.png
 src/*.jpg
 stb_image.h
+venv/
 
 # VS Code
 .vscode
